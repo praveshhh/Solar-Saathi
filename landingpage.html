@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Predictive Core | AI Solar Panel Longevity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0c111d; /* A dark, techy blue */
+        }
+        .glass-effect {
+            background: rgba(17, 24, 39, 0.8); /* Semi-transparent dark bg */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        .hero-bg {
+            background-image: linear-gradient(to bottom, rgba(12, 17, 29, 0.9), rgba(12, 17, 29, 1)), url('https://placehold.co/1920x1080/0c111d/f59e0b?text=Solar+Farm');
+            background-size: cover;
+            background-position: center;
+        }
+        .gauge-circle-bg {
+            fill: none;
+            stroke: #374151; /* gray-700 */
+        }
+        .gauge-circle {
+            fill: none;
+            stroke: url(#gradient);
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+        .glow-effect {
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.3), 0 0 30px rgba(251, 191, 36, 0.2);
+        }
+        .btn-primary {
+            background-color: #FBBF24; /* amber-400 */
+            color: #1f2937; /* gray-800 */
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #F59E0B; /* amber-500 */
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(251, 191, 36, 0.2);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: #FBBF24;
+            border: 1px solid #FBBF24;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #FBBF24;
+            color: #1f2937;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <!-- Header / Navigation -->
+    <header class="glass-effect sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <svg class="h-8 w-8 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <a href="#" class="text-2xl font-bold text-white">The Predictive Core</a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="hover:text-amber-400 transition-colors">About</a>
+                <a href="#methodology" class="hover:text-amber-400 transition-colors">Methodology</a>
+                <a href="#predictor" class="hover:text-amber-400 transition-colors">Predictor Tool</a>
+                <a href="#tech" class="hover:text-amber-400 transition-colors">Technology</a>
+                <a href="#dashboard" id="dashboard-link" class="hover:text-amber-400 transition-colors hidden">Dashboard</a>
+            </div>
+            <!-- Auth Buttons -->
+            <div id="auth-buttons" class="hidden md:flex items-center space-x-4">
+                 <button id="signin-btn" class="font-bold py-2 px-5 rounded-lg btn-secondary">Sign In</button>
+                 <button id="signup-btn" class="font-bold py-2 px-5 rounded-lg btn-primary">Sign Up</button>
+            </div>
+             <!-- Logged In State -->
+            <div id="user-menu" class="hidden md:flex items-center space-x-4">
+                <span id="welcome-msg" class="font-medium text-white"></span>
+                <button id="logout-btn" class="font-bold py-2 px-5 rounded-lg btn-secondary">Logout</button>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md hover:bg-gray-700">
+                <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#about" class="block py-2 hover:text-amber-400">About</a>
+            <a href="#methodology" class="block py-2 hover:text-amber-400">Methodology</a>
+            <a href="#predictor" class="block py-2 hover:text-amber-400">Predictor Tool</a>
+            <a href="#tech" class="block py-2 hover:text-amber-400">Technology</a>
+            <a href="#dashboard" id="mobile-dashboard-link" class="block py-2 hover:text-amber-400 hidden">Dashboard</a>
+            <div id="mobile-auth-buttons" class="mt-4 space-y-2">
+                <button id="mobile-signin-btn" class="w-full text-center font-bold py-2 px-5 rounded-lg btn-secondary">Sign In</button>
+                <button id="mobile-signup-btn" class="w-full text-center font-bold py-2 px-5 rounded-lg btn-primary">Sign Up</button>
+            </div>
+            <div id="mobile-user-menu" class="hidden mt-4">
+                 <span id="mobile-welcome-msg" class="block text-center font-medium text-white mb-2"></span>
+                <button id="mobile-logout-btn" class="w-full text-center font-bold py-2 px-5 rounded-lg btn-secondary">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section, About, Methodology etc. remain unchanged -->
+        <!-- ... existing sections ... -->
+        <section class="hero-bg py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4">
+                    Predicting Solar Panel Longevity with AI
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+                    Leveraging a "Software-First" approach to de-risk and accelerate the development of next-generation solar energy maintenance solutions.
+                </p>
+                <a href="#predictor" class="btn-primary text-lg font-bold py-4 px-8 rounded-lg inline-block">
+                    Try the Live Predictor
+                </a>
+            </div>
+        </section>
+
+        <!-- About the Project Section -->
+        <section id="about" class="py-20 bg-[#111827]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">A Smarter, Software-First Approach</h2>
+                    <p class="text-amber-400 mt-2">Validate First, Build Later.</p>
+                </div>
+                <div class="max-w-4xl mx-auto text-lg text-gray-300 space-y-6">
+                    <p>
+                        Before committing to costly hardware design and fabrication, it's crucial to validate the core of our innovation: the AI/ML model. Our "Software-First" methodology focuses on developing a robust predictive engine using high-quality public data.
+                    </p>
+                    <p>
+                        This strategy allows us to test, refine, and perfect the system's intelligence in parallel with hardware considerations. By ensuring the predictive core is effective from the outset, we significantly de-risk the project and build a solid, data-driven foundation for all subsequent development phases.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Methodology Section -->
+        <section id="methodology" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Our 3-Step Methodology</h2>
+                    <p class="text-gray-400 mt-2 max-w-2xl mx-auto">From public data to a deployable API, we follow a rigorous and efficient development pipeline.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                     <div class="glass-effect p-8 rounded-2xl">
+                        <div class="flex items-center justify-center h-16 w-16 bg-amber-400/10 text-amber-400 rounded-full mx-auto mb-6">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4" /></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">1. Data Acquisition</h3>
+                        <p class="text-gray-400">We harness large-scale, publicly available datasets from the National Renewable Energy Laboratory (NREL), specifically the PVDAQ database, which contains years of real-world performance, environmental, and system metadata from solar installations.</p>
+                    </div>
+                    <div class="glass-effect p-8 rounded-2xl">
+                        <div class="flex items-center justify-center h-16 w-16 bg-amber-400/10 text-amber-400 rounded-full mx-auto mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">2. Model Selection & Training</h3>
+                        <p class="text-gray-400">We utilize cutting-edge models like LSTMs for time-series analysis and robust ensemble models like XGBoost. These models are trained on PVDAQ data to learn the complex correlations between environmental stressors and panel degradation, enabling accurate RUL predictions.</p>
+                    </div>
+                    <div class="glass-effect p-8 rounded-2xl">
+                        <div class="flex items-center justify-center h-16 w-16 bg-amber-400/10 text-amber-400 rounded-full mx-auto mb-6">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">3. API Deployment</h3>
+                        <p class="text-gray-400">The validated model is saved and deployed via a lightweight Python (Flask/FastAPI) web API. This API is containerized with Docker for scalability and acts as the bridge between our powerful AI model and this user-facing website, delivering predictions on demand.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- User/Admin Dashboard Section -->
+        <section id="dashboard" class="hidden py-20 bg-gray-900">
+            <div class="container mx-auto px-6">
+                <!-- User Dashboard View -->
+                <div id="user-dashboard-view" class="hidden">
+                     <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-12">User Dashboard</h2>
+                     <p class="text-center text-lg text-gray-300">Welcome, <span id="dash-username">User</span>! Here you can view your saved predictions and manage your profile.</p>
+                     <!-- Placeholder content for user dashboard -->
+                     <div class="mt-8 text-center bg-gray-800 p-8 rounded-lg max-w-md mx-auto">
+                        <p class="text-gray-400">User-specific features coming soon.</p>
+                     </div>
+                </div>
+                <!-- Admin Dashboard View -->
+                <div id="admin-dashboard-view" class="hidden">
+                     <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-12">Admin Dashboard</h2>
+                     <p class="text-center text-lg text-gray-300">Welcome, Admin! Access site analytics and user management tools.</p>
+                     <!-- Placeholder content for admin dashboard -->
+                     <div class="mt-8 text-center bg-gray-800 p-8 rounded-lg max-w-md mx-auto">
+                        <p class="text-gray-400">Admin-specific features coming soon.</p>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Predictor Tool Section -->
+        <section id="predictor" class="py-20 bg-[#111827]">
+           <!-- ... existing predictor code ... -->
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Live Longevity Predictor</h2>
+                    <p class="text-gray-400 mt-2 max-w-2xl mx-auto">Enter your solar panel's data to receive an AI-powered prediction of its Remaining Useful Life (RUL).</p>
+                </div>
+
+                <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+                    <!-- Input Form -->
+                    <div class="glass-effect p-8 rounded-2xl">
+                        <h3 class="text-2xl font-bold text-white mb-6">Panel & Environment Data</h3>
+                        <form id="prediction-form" class="space-y-6">
+                            <div>
+                                <label for="panel-age" class="block text-sm font-medium text-gray-300 mb-2">Panel Age (Years)</label>
+                                <input type="number" id="panel-age" name="panel-age" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" placeholder="e.g., 5" required min="0" max="40">
+                            </div>
+                            <div>
+                                <label for="panel-type" class="block text-sm font-medium text-gray-300 mb-2">Panel Type</label>
+                                <select id="panel-type" name="panel-type" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400">
+                                    <option value="mono">Monocrystalline Silicon</option>
+                                    <option value="poly">Polycrystalline Silicon</option>
+                                    <option value="thin">Thin-Film (CdTe)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="irradiance" class="block text-sm font-medium text-gray-300 mb-2">Avg. Daily Solar Irradiance (kWh/m²)</label>
+                                <input type="number" step="0.1" id="irradiance" name="irradiance" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" placeholder="e.g., 4.5" required min="1" max="10">
+                            </div>
+                             <div>
+                                <label for="temperature" class="block text-sm font-medium text-gray-300 mb-2">Avg. Ambient Temperature (°C)</label>
+                                <input type="number" id="temperature" name="temperature" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" placeholder="e.g., 25" required min="-20" max="50">
+                            </div>
+                            <button type="submit" id="predict-button" class="w-full btn-primary text-lg font-bold py-4 rounded-lg flex items-center justify-center space-x-2">
+                                <svg id="predict-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                                <span id="predict-button-text">Calculate RUL</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Output/Result -->
+                    <div id="result-container" class="text-center">
+                        <!-- Initial State -->
+                        <div id="initial-state" class="text-gray-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                            <h3 class="text-xl font-semibold">Awaiting Data</h3>
+                            <p>Your prediction results will appear here.</p>
+                        </div>
+                        
+                        <!-- Loading State -->
+                        <div id="loading-state" class="hidden text-gray-400">
+                            <svg class="animate-spin h-16 w-16 mx-auto text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <h3 class="text-xl font-semibold mt-4">Analyzing...</h3>
+                            <p>Our AI model is processing your data.</p>
+                        </div>
+                        
+                        <!-- Result State -->
+                        <div id="result-state" class="hidden">
+                            <div class="relative w-64 h-64 mx-auto">
+                                <svg class="w-full h-full" viewBox="0 0 120 120">
+                                    <defs>
+                                        <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" stop-color="#FBBF24" />
+                                            <stop offset="100%" stop-color="#D97706" />
+                                        </linearGradient>
+                                    </defs>
+                                    <circle class="gauge-circle-bg" cx="60" cy="60" r="54" stroke-width="12"></circle>
+                                    <circle id="gauge-circle" class="gauge-circle" cx="60" cy="60" r="54" stroke-width="12" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"></circle>
+                                </svg>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                    <span class="text-4xl font-extrabold text-white" id="rul-value">18.5</span>
+                                    <span class="text-lg font-medium text-gray-400">Years RUL</span>
+                                </div>
+                            </div>
+                             <h3 class="text-2xl font-bold text-white mt-6" id="result-title">Excellent Performance</h3>
+                            <p class="text-gray-300 max-w-sm mx-auto mt-2" id="result-description">The panel is operating within expected parameters with a long remaining useful life.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Section -->
+        <section id="tech" class="py-20">
+             <!-- ... existing tech stack code ... -->
+             <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Technology Stack</h2>
+                    <p class="text-gray-400 mt-2">Built with industry-leading tools for robust and scalable AI solutions.</p>
+                </div>
+                <div class="max-w-4xl mx-auto flex flex-wrap justify-center items-center gap-x-8 gap-y-6">
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">NREL PVDAQ</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">Python</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">LSTM Networks</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">XGBoost</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">Flask / FastAPI</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">Docker</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">JSON API</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900/50 border-t border-gray-800 mt-20">
+        <!-- ... existing footer code ... -->
+        <div class="container mx-auto px-6 py-8 text-center text-gray-500">
+            <p>&copy; 2025 The Predictive Core. All Rights Reserved.</p>
+            <p class="text-sm mt-2">A conceptual demonstration of a software-first AI/ML development approach.</p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <!-- Sign In Modal -->
+    <div id="signin-modal" class="fixed inset-0 z-50 modal-backdrop items-center justify-center hidden">
+        <div class="glass-effect rounded-2xl w-full max-w-md p-8 m-4 relative">
+            <button class="close-modal-btn absolute top-4 right-4 text-gray-500 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-2xl font-bold text-white text-center mb-6">Sign In</h2>
+            <form id="signin-form" class="space-y-6">
+                <div>
+                    <label for="signin-email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                    <input type="email" id="signin-email" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" required>
+                </div>
+                <div>
+                    <label for="signin-password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                    <input type="password" id="signin-password" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" required>
+                </div>
+                 <button type="submit" class="w-full btn-primary text-lg font-bold py-3 rounded-lg">Sign In</button>
+            </form>
+            <p class="text-center text-sm text-gray-400 mt-6">
+                No account? <button id="switch-to-signup" class="font-medium text-amber-400 hover:underline">Sign up</button>
+            </p>
+             <p class="text-center text-sm text-gray-400 mt-2">
+                <button id="switch-to-admin-signin" class="font-medium text-gray-500 hover:text-amber-400">Sign in as Admin</button>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="fixed inset-0 z-50 modal-backdrop items-center justify-center hidden">
+        <div class="glass-effect rounded-2xl w-full max-w-md p-8 m-4 relative">
+             <button class="close-modal-btn absolute top-4 right-4 text-gray-500 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-2xl font-bold text-white text-center mb-6">Create Account</h2>
+            <form id="signup-form" class="space-y-6">
+                 <div>
+                    <label for="signup-username" class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+                    <input type="text" id="signup-username" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" required>
+                </div>
+                <div>
+                    <label for="signup-email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                    <input type="email" id="signup-email" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" required>
+                </div>
+                <div>
+                    <label for="signup-password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                    <input type="password" id="signup-password" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" required>
+                </div>
+                 <button type="submit" class="w-full btn-primary text-lg font-bold py-3 rounded-lg">Create Account</button>
+            </form>
+             <p class="text-center text-sm text-gray-400 mt-6">
+                Already have an account? <button id="switch-to-signin" class="font-medium text-amber-400 hover:underline">Sign in</button>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Admin Sign In Modal -->
+    <div id="admin-signin-modal" class="fixed inset-0 z-50 modal-backdrop items-center justify-center hidden">
+        <div class="glass-effect rounded-2xl w-full max-w-md p-8 m-4 relative">
+            <button class="close-modal-btn absolute top-4 right-4 text-gray-500 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-2xl font-bold text-white text-center mb-6">Admin Sign In</h2>
+            <form id="admin-signin-form" class="space-y-6">
+                <div>
+                    <label for="admin-signin-email" class="block text-sm font-medium text-gray-300 mb-2">Admin Email</label>
+                    <input type="email" id="admin-signin-email" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" value="admin@predictivecore.com" required>
+                </div>
+                <div>
+                    <label for="admin-signin-password" class="block text-sm font-medium text-gray-300 mb-2">Admin Password</label>
+                    <input type="password" id="admin-signin-password" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" value="admin123" required>
+                </div>
+                 <button type="submit" class="w-full btn-primary text-lg font-bold py-3 rounded-lg">Sign In as Admin</button>
+            </form>
+            <p class="text-center text-sm text-gray-400 mt-6">
+                <button id="switch-to-user-signin" class="font-medium text-gray-500 hover:text-amber-400">Sign in as User</button>
+            </p>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- State Management ---
+            let currentUser = null; // { name: 'string', isAdmin: boolean }
+
+            // --- Element Selectors ---
+            const mainContent = {
+                authButtons: document.getElementById('auth-buttons'),
+                userMenu: document.getElementById('user-menu'),
+                welcomeMsg: document.getElementById('welcome-msg'),
+                dashboardLink: document.getElementById('dashboard-link'),
+                dashboardSection: document.getElementById('dashboard'),
+                userDashboardView: document.getElementById('user-dashboard-view'),
+                adminDashboardView: document.getElementById('admin-dashboard-view'),
+                dashUsername: document.getElementById('dash-username'),
+            };
+
+            const mobileContent = {
+                menuButton: document.getElementById('mobile-menu-button'),
+                menu: document.getElementById('mobile-menu'),
+                authButtons: document.getElementById('mobile-auth-buttons'),
+                userMenu: document.getElementById('mobile-user-menu'),
+                welcomeMsg: document.getElementById('mobile-welcome-msg'),
+                dashboardLink: document.getElementById('mobile-dashboard-link'),
+            };
+
+            const modals = {
+                signIn: document.getElementById('signin-modal'),
+                signUp: document.getElementById('signup-modal'),
+                adminSignIn: document.getElementById('admin-signin-modal'),
+            };
+
+            const forms = {
+                signIn: document.getElementById('signin-form'),
+                signUp: document.getElementById('signup-form'),
+                adminSignIn: document.getElementById('admin-signin-form'),
+            };
+            
+            // --- UI Update Function ---
+            function updateUI() {
+                if (currentUser) {
+                    // Logged In
+                    mainContent.authButtons.classList.add('hidden');
+                    mainContent.userMenu.classList.remove('hidden');
+                    mainContent.welcomeMsg.textContent = `Welcome, ${currentUser.name}`;
+                    mainContent.dashboardLink.classList.remove('hidden');
+                    mainContent.dashboardSection.classList.remove('hidden');
+
+                    mobileContent.authButtons.classList.add('hidden');
+                    mobileContent.userMenu.classList.remove('hidden');
+                    mobileContent.welcomeMsg.textContent = `Welcome, ${currentUser.name}`;
+                    mobileContent.dashboardLink.classList.remove('hidden');
+                    
+                    if (currentUser.isAdmin) {
+                        mainContent.userDashboardView.classList.add('hidden');
+                        mainContent.adminDashboardView.classList.remove('hidden');
+                    } else {
+                        mainContent.adminDashboardView.classList.add('hidden');
+                        mainContent.userDashboardView.classList.remove('hidden');
+                        mainContent.dashUsername.textContent = currentUser.name;
+                    }
+                } else {
+                    // Logged Out
+                    mainContent.authButtons.classList.remove('hidden');
+                    mainContent.userMenu.classList.add('hidden');
+                    mainContent.dashboardLink.classList.add('hidden');
+                    mainContent.dashboardSection.classList.add('hidden');
+
+                    mobileContent.authButtons.classList.remove('hidden');
+                    mobileContent.userMenu.classList.add('hidden');
+                    mobileContent.dashboardLink.classList.add('hidden');
+                }
+            }
+
+            // --- Modal Logic ---
+            const openModal = (modal) => {
+                Object.values(modals).forEach(m => {
+                    m.classList.add('hidden');
+                    m.classList.remove('flex');
+                });
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            };
+
+            const closeModal = () => {
+                 Object.values(modals).forEach(m => {
+                    m.classList.add('hidden');
+                    m.classList.remove('flex');
+                 });
+            };
+            
+            // Event listeners to open modals
+            document.getElementById('signin-btn').addEventListener('click', () => openModal(modals.signIn));
+            document.getElementById('mobile-signin-btn').addEventListener('click', () => openModal(modals.signIn));
+            document.getElementById('signup-btn').addEventListener('click', () => openModal(modals.signUp));
+            document.getElementById('mobile-signup-btn').addEventListener('click', () => openModal(modals.signUp));
+
+            // Event listeners for modal switching
+            document.getElementById('switch-to-signup').addEventListener('click', () => openModal(modals.signUp));
+            document.querySelectorAll('#switch-to-signin').forEach(el => el.addEventListener('click', () => openModal(modals.signIn)));
+            document.getElementById('switch-to-admin-signin').addEventListener('click', () => openModal(modals.adminSignIn));
+            document.getElementById('switch-to-user-signin').addEventListener('click', () => openModal(modals.signIn));
+
+            // Event listener for closing modals
+            document.querySelectorAll('.close-modal-btn').forEach(btn => btn.addEventListener('click', closeModal));
+            Object.values(modals).forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) closeModal();
+                });
+            });
+
+            // --- Authentication Logic ---
+            forms.signUp.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('signup-username').value;
+                // SIMULATE: In a real app, you'd register the user in a database.
+                currentUser = { name: username, isAdmin: false };
+                closeModal();
+                updateUI();
+            });
+
+            forms.signIn.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('signin-email').value;
+                // SIMULATE: Use email to create a username for display
+                const username = email.split('@')[0];
+                currentUser = { name: username, isAdmin: false };
+                closeModal();
+                updateUI();
+            });
+
+            forms.adminSignIn.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('admin-signin-email').value;
+                const pass = document.getElementById('admin-signin-password').value;
+                // SIMULATE: Check for hardcoded admin credentials
+                if (email === 'admin@predictivecore.com' && pass === 'admin123') {
+                     currentUser = { name: 'Admin', isAdmin: true };
+                     closeModal();
+                     updateUI();
+                } else {
+                    alert('Invalid Admin Credentials');
+                }
+            });
+
+            const handleLogout = () => {
+                currentUser = null;
+                updateUI();
+            };
+            
+            document.getElementById('logout-btn').addEventListener('click', handleLogout);
+            document.getElementById('mobile-logout-btn').addEventListener('click', handleLogout);
+
+
+            // --- Mobile Menu Toggle ---
+            mobileContent.menuButton.addEventListener('click', () => {
+                mobileContent.menu.classList.toggle('hidden');
+            });
+
+            // --- Prediction Form Logic (Original) ---
+            const predictionForm = document.getElementById('prediction-form');
+            const initialState = document.getElementById('initial-state');
+            const loadingState = document.getElementById('loading-state');
+            const resultState = document.getElementById('result-state');
+            const predictButton = document.getElementById('predict-button');
+            const predictButtonText = document.getElementById('predict-button-text');
+
+            predictionForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const panelAge = parseFloat(document.getElementById('panel-age').value);
+                const panelType = document.getElementById('panel-type').value;
+                const irradiance = parseFloat(document.getElementById('irradiance').value);
+                const temperature = parseFloat(document.getElementById('temperature').value);
+
+                if (isNaN(panelAge) || isNaN(irradiance) || isNaN(temperature)) {
+                    // Replaced alert with a more modern notification if possible, but alert is fine for now
+                    alert("Please fill in all fields with valid numbers.");
+                    return;
+                }
+
+                initialState.classList.add('hidden');
+                resultState.classList.add('hidden');
+                loadingState.classList.remove('hidden');
+                predictButton.disabled = true;
+                predictButtonText.textContent = 'Analyzing...';
+                
+                setTimeout(() => {
+                    let baseRUL = 25;
+                    let ageFactor = panelAge * 1.15;
+                    let tempFactor = (Math.max(0, temperature - 20)) * 0.1;
+                    let irradianceFactor = (Math.max(0, irradiance - 5)) * 0.2;
+                    let typeFactor = panelType === 'thin' ? 1.2 : 1;
+                    let predictedRUL = baseRUL - (ageFactor + tempFactor + irradianceFactor) * typeFactor;
+                    predictedRUL = Math.max(0, predictedRUL);
+                    
+                    displayResults(predictedRUL);
+
+                    predictButton.disabled = false;
+                    predictButtonText.textContent = 'Calculate RUL';
+                }, 2000); 
+            });
+
+            function displayResults(rul) {
+                loadingState.classList.add('hidden');
+                resultState.classList.remove('hidden');
+
+                const rulValueEl = document.getElementById('rul-value');
+                const resultTitleEl = document.getElementById('result-title');
+                const resultDescEl = document.getElementById('result-description');
+                const gaugeCircle = document.getElementById('gauge-circle');
+
+                rulValueEl.textContent = rul.toFixed(1);
+                let title, description;
+                if (rul > 15) {
+                    title = "Excellent Condition";
+                    description = "The panel is operating optimally with a long remaining useful life. No immediate action required.";
+                } else if (rul > 7) {
+                    title = "Good Condition";
+                    description = "Performance is within expected degradation curves. Regular monitoring is recommended.";
+                } else if (rul > 2) {
+                    title = "Moderate Degradation";
+                    description = "The panel shows signs of significant wear. Consider scheduling an inspection and planning for future replacement.";
+                } else {
+                    title = "End of Life Approaching";
+                    description = "Performance is critically low. Replacement is highly recommended to maintain system efficiency.";
+                }
+
+                resultTitleEl.textContent = title;
+                resultDescEl.textContent = description;
+                
+                const maxRUL = 25;
+                const percentage = Math.min(100, (rul / maxRUL) * 100);
+                const offset = 100 - percentage;
+                gaugeCircle.style.strokeDashoffset = offset;
+            }
+
+            // Initial UI setup on page load
+            updateUI();
+        });
+    </script>
+</body>
+</html>
+

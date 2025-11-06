@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Predictive Core | AI Solar Panel Longevity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0c111d;
+        }
+        .glass-effect {
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        .hero-bg {
+            background-image: linear-gradient(to bottom, rgba(12, 17, 29, 0.9), rgba(12, 17, 29, 1)), url('https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        .gauge-circle-bg {
+            fill: none;
+            stroke: #374151;
+        }
+        .gauge-circle {
+            fill: none;
+            stroke: url(#gradient);
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+        .glow-effect {
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.3), 0 0 30px rgba(251, 191, 36, 0.2);
+        }
+        .btn-primary {
+            background-color: #FBBF24;
+            color: #1f2937;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #F59E0B;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(251, 191, 36, 0.2);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: #FBBF24;
+            border: 1px solid #FBBF24;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #FBBF24;
+            color: #1f2937;
+        }
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-card {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <!-- Notification System -->
+    <div id="notification" class="notification hidden glass-effect p-4 rounded-lg max-w-sm">
+        <div class="flex items-start">
+            <div id="notification-icon" class="mr-3 mt-1"></div>
+            <div class="flex-1">
+                <h4 id="notification-title" class="font-bold text-white"></h4>
+                <p id="notification-message" class="text-sm text-gray-300 mt-1"></p>
+            </div>
+            <button id="close-notification" class="text-gray-400 hover:text-white ml-4">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Header / Navigation -->
+    <header class="glass-effect sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <svg class="h-8 w-8 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <a href="#" class="text-2xl font-bold text-white">Solar Saathi</a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="hover:text-amber-400 transition-colors">About</a>
+                <a href="#methodology" class="hover:text-amber-400 transition-colors">Methodology</a>
+                <a href="#predictor" class="hover:text-amber-400 transition-colors">Predictor Tool</a>
+                <a href="#tech" class="hover:text-amber-400 transition-colors">Technology</a>
+                <a href="#dashboard" id="dashboard-link" class="hover:text-amber-400 transition-colors hidden">Dashboard</a>
+            </div>
+            <!-- Auth Buttons -->
+            <div id="auth-buttons" class="hidden md:flex items-center space-x-4">
+                 <button id="signin-btn" class="font-bold py-2 px-5 rounded-lg btn-secondary">Sign In</button>
+                 <button id="signup-btn" class="font-bold py-2 px-5 rounded-lg btn-primary">Sign Up</button>
+            </div>
+             <!-- Logged In State -->
+            <div id="user-menu" class="hidden md:flex items-center space-x-4">
+                <span id="welcome-msg" class="font-medium text-white"></span>
+                <button id="logout-btn" class="font-bold py-2 px-5 rounded-lg btn-secondary">Logout</button>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md hover:bg-gray-700">
+                <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#about" class="block py-2 hover:text-amber-400">About</a>
+            <a href="#methodology" class="block py-2 hover:text-amber-400">Methodology</a>
+            <a href="#predictor" class="block py-2 hover:text-amber-400">Predictor Tool</a>
+            <a href="#tech" class="block py-2 hover:text-amber-400">Technology</a>
+            <a href="#dashboard" id="mobile-dashboard-link" class="block py-2 hover:text-amber-400 hidden">Dashboard</a>
+            <div id="mobile-auth-buttons" class="mt-4 space-y-2">
+                <button id="mobile-signin-btn" class="w-full text-center font-bold py-2 px-5 rounded-lg btn-secondary">Sign In</button>
+                <button id="mobile-signup-btn" class="w-full text-center font-bold py-2 px-5 rounded-lg btn-primary">Sign Up</button>
+            </div>
+            <div id="mobile-user-menu" class="hidden mt-4">
+                 <span id="mobile-welcome-msg" class="block text-center font-medium text-white mb-2"></span>
+                <button id="mobile-logout-btn" class="w-full text-center font-bold py-2 px-5 rounded-lg btn-secondary">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-bg py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4">
+                    Predicting Solar Panel Longevity with AI
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+                    Leveraging a "Software-First" approach to de-risk and accelerate the development of next-generation solar energy maintenance solutions.
+                </p>
+                <a href="#predictor" class="btn-primary text-lg font-bold py-4 px-8 rounded-lg inline-block">
+                    Try the Live Predictor
+                </a>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-12 bg-gray-900">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="stat-card p-6 rounded-xl text-center">
+                        <div class="text-3xl font-bold text-amber-400 mb-2">25+</div>
+                        <div class="text-gray-400">Years Data Analyzed</div>
+                    </div>
+                    <div class="stat-card p-6 rounded-xl text-center">
+                        <div class="text-3xl font-bold text-amber-400 mb-2">96%</div>
+                        <div class="text-gray-400">Prediction Accuracy</div>
+                    </div>
+                    <div class="stat-card p-6 rounded-xl text-center">
+                        <div class="text-3xl font-bold text-amber-400 mb-2">10K+</div>
+                        <div class="text-gray-400">Panels Monitored</div>
+                    </div>
+                    <div class="stat-card p-6 rounded-xl text-center">
+                        <div class="text-3xl font-bold text-amber-400 mb-2">$2.1M</div>
+                        <div class="text-gray-400">Savings Generated</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About the Project Section -->
+        <section id="about" class="py-20 bg-[#111827]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">A Smarter, Software-First Approach</h2>
+                    <p class="text-amber-400 mt-2">Validate First, Build Later.</p>
+                </div>
+                <div class="max-w-4xl mx-auto text-lg text-gray-300 space-y-6">
+                    <p>
+                        Before committing to costly hardware design and fabrication, it's crucial to validate the core of our innovation: the AI/ML model. Our "Software-First" methodology focuses on developing a robust predictive engine using high-quality public data.
+                    </p>
+                    <p>
+                        This strategy allows us to test, refine, and perfect the system's intelligence in parallel with hardware considerations. By ensuring the predictive core is effective from the outset, we significantly de-risk the project and build a solid, data-driven foundation for all subsequent development phases.
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8 mt-16">
+                    <div class="feature-card glass-effect p-6 rounded-2xl">
+                        <div class="flex items-center justify-center h-16 w-16 bg-amber-400/10 text-amber-400 rounded-full mb-4">
+                            <i class="fas fa-database text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Data-Driven</h3>
+                        <p class="text-gray-400">Leveraging real-world solar performance data from NREL's PVDAQ database for accurate predictions.</p>
+                    </div>
+                    <div class="feature-card glass-effect p-6 rounded-2xl">
+                        <div class="flex items-center justify-center h-16 w-16 bg-amber-400/10 text-amber-400 rounded-full mb-4">
+                            <i class="fas fa-brain text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">AI-Powered</h3>
+                        <p class="text-gray-400">Advanced machine learning models trained to recognize degradation patterns and predict remaining useful life.</p>
+                    </div>
+                    <div class="feature-card glass-effect p-6 rounded-2xl">
+                        <div class="flex items-center justify-center h-16 w-16 bg-amber-400/10 text-amber-400 rounded-full mb-4">
+                            <i class="fas fa-chart-line text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Cost-Effective</h3>
+                        <p class="text-gray-400">Reduce maintenance costs and extend ROI by proactively managing your solar assets.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Methodology Section -->
+        <section id="methodology" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Our 3-Step Methodology</h2>
+                    <p class="text-gray-400 mt-2 max-w-2xl mx-auto">From public data to a deployable API, we follow a rigorous and efficient development pipeline.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                     <div class="glass-effect p-8 rounded-2xl feature-card">
+                        <div class="flex items-center justify-center h-16 w-16 bg-amber-400/10 text-amber-400 rounded-full mx-auto mb-6">
+                           <i class="fas fa-database text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">1. Data Acquisition</h3>
+                        <p class="text-gray-400">We harness large-scale, publicly available datasets from the National Renewable Energy Laboratory (NREL), specifically the PVDAQ database, which contains years of real-world performance, environmental, and system metadata from solar installations.</p>
+                    </div>
+                    <div class="glass-effect p-8 rounded-2xl feature-card">
+                        <div class="flex items-center justify-center h-16 w-16 bg-amber-400/10 text-amber-400 rounded-full mx-auto mb-6">
+                            <i class="fas fa-brain text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">2. Model Selection & Training</h3>
+                        <p class="text-gray-400">We utilize cutting-edge models like LSTMs for time-series analysis and robust ensemble models like XGBoost. These models are trained on PVDAQ data to learn the complex correlations between environmental stressors and panel degradation, enabling accurate RUL predictions.</p>
+                    </div>
+                    <div class="glass-effect p-8 rounded-2xl feature-card">
+                        <div class="flex items-center justify-center h-16 w-16 bg-amber-400/10 text-amber-400 rounded-full mx-auto mb-6">
+                             <i class="fas fa-code text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">3. API Deployment</h3>
+                        <p class="text-gray-400">The validated model is saved and deployed via a lightweight Python (Flask/FastAPI) web API. This API is containerized with Docker for scalability and acts as the bridge between our powerful AI model and this user-facing website, delivering predictions on demand.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- User/Admin Dashboard Section -->
+        <section id="dashboard" class="hidden py-20 bg-gray-900">
+            <div class="container mx-auto px-6">
+                <!-- User Dashboard View -->
+                <div id="user-dashboard-view" class="hidden">
+                     <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-12">User Dashboard</h2>
+                     <p class="text-center text-lg text-gray-300">Welcome, <span id="dash-username">User</span>! Here you can view your saved predictions and manage your profile.</p>
+                     
+                     <div class="mt-8 grid md:grid-cols-2 gap-6">
+                         <div class="glass-effect p-6 rounded-2xl">
+                             <h3 class="text-xl font-bold text-white mb-4">Recent Predictions</h3>
+                             <div id="recent-predictions" class="space-y-4">
+                                 <!-- Recent predictions will be populated here -->
+                             </div>
+                         </div>
+                         <div class="glass-effect p-6 rounded-2xl">
+                             <h3 class="text-xl font-bold text-white mb-4">Profile Settings</h3>
+                             <div class="space-y-4">
+                                 <div>
+                                     <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                                     <input type="email" id="profile-email" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" value="user@example.com">
+                                 </div>
+                                 <div>
+                                     <label class="block text-sm font-medium text-gray-300 mb-2">Notification Preferences</label>
+                                     <div class="flex items-center space-x-2">
+                                         <input type="checkbox" id="email-notifications" class="rounded bg-gray-800 border-gray-700 text-amber-400 focus:ring-amber-400">
+                                         <label for="email-notifications" class="text-gray-300">Email notifications</label>
+                                     </div>
+                                 </div>
+                                 <button class="btn-primary w-full py-2 rounded-lg font-medium">Save Changes</button>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+                
+                <!-- Admin Dashboard View -->
+                <div id="admin-dashboard-view" class="hidden">
+                     <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-12">Admin Dashboard</h2>
+                     <p class="text-center text-lg text-gray-300">Welcome, Admin! Access site analytics and user management tools.</p>
+                     
+                     <div class="mt-8 grid md:grid-cols-2 gap-6">
+                         <div class="glass-effect p-6 rounded-2xl">
+                             <h3 class="text-xl font-bold text-white mb-4">System Analytics</h3>
+                             <div class="space-y-4">
+                                 <div class="flex justify-between items-center">
+                                     <span class="text-gray-300">Total Users</span>
+                                     <span class="text-amber-400 font-bold">1,247</span>
+                                 </div>
+                                 <div class="flex justify-between items-center">
+                                     <span class="text-gray-300">Predictions Today</span>
+                                     <span class="text-amber-400 font-bold">84</span>
+                                 </div>
+                                 <div class="flex justify-between items-center">
+                                     <span class="text-gray-300">System Uptime</span>
+                                     <span class="text-amber-400 font-bold">99.8%</span>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="glass-effect p-6 rounded-2xl">
+                             <h3 class="text-xl font-bold text-white mb-4">Quick Actions</h3>
+                             <div class="space-y-3">
+                                 <button class="w-full text-left py-2 px-4 bg-amber-400/10 text-amber-400 rounded-lg hover:bg-amber-400/20 transition-colors">
+                                     View User Reports
+                                 </button>
+                                 <button class="w-full text-left py-2 px-4 bg-amber-400/10 text-amber-400 rounded-lg hover:bg-amber-400/20 transition-colors">
+                                     Manage Model Settings
+                                 </button>
+                                 <button class="w-full text-left py-2 px-4 bg-amber-400/10 text-amber-400 rounded-lg hover:bg-amber-400/20 transition-colors">
+                                     System Diagnostics
+                                 </button>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Predictor Tool Section -->
+        <section id="predictor" class="py-20 bg-[#111827]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Live Longevity Predictor</h2>
+                    <p class="text-gray-400 mt-2 max-w-2xl mx-auto">Enter your solar panel's data to receive an AI-powered prediction of its Remaining Useful Life (RUL).</p>
+                </div>
+
+                <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+                    <!-- Input Form -->
+                    <div class="glass-effect p-8 rounded-2xl">
+                        <h3 class="text-2xl font-bold text-white mb-6">Panel & Environment Data</h3>
+                        <form id="prediction-form" class="space-y-6">
+                            <div>
+                                <label for="panel-age" class="block text-sm font-medium text-gray-300 mb-2">Panel Age (Years)</label>
+                                <input type="number" id="panel-age" name="panel-age" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" placeholder="e.g., 5" required min="0" max="40">
+                            </div>
+                            <div>
+                                <label for="panel-type" class="block text-sm font-medium text-gray-300 mb-2">Panel Type</label>
+                                <select id="panel-type" name="panel-type" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400">
+                                    <option value="mono">Monocrystalline Silicon</option>
+                                    <option value="poly">Polycrystalline Silicon</option>
+                                    <option value="thin">Thin-Film (CdTe)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="irradiance" class="block text-sm font-medium text-gray-300 mb-2">Avg. Daily Solar Irradiance (kWh/m²)</label>
+                                <input type="number" step="0.1" id="irradiance" name="irradiance" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" placeholder="e.g., 4.5" required min="1" max="10">
+                            </div>
+                             <div>
+                                <label for="temperature" class="block text-sm font-medium text-gray-300 mb-2">Avg. Ambient Temperature (°C)</label>
+                                <input type="number" id="temperature" name="temperature" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" placeholder="e.g., 25" required min="-20" max="50">
+                            </div>
+                            <div>
+                                <label for="humidity" class="block text-sm font-medium text-gray-300 mb-2">Avg. Humidity (%)</label>
+                                <input type="number" id="humidity" name="humidity" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" placeholder="e.g., 60" required min="0" max="100">
+                            </div>
+                            <button type="submit" id="predict-button" class="w-full btn-primary text-lg font-bold py-4 rounded-lg flex items-center justify-center space-x-2">
+                                <i id="predict-icon" class="fas fa-calculator"></i>
+                                <span id="predict-button-text">Calculate RUL</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Output/Result -->
+                    <div id="result-container" class="text-center">
+                        <!-- Initial State -->
+                        <div id="initial-state" class="text-gray-500">
+                            <i class="fas fa-solar-panel text-6xl mx-auto mb-4 text-gray-600"></i>
+                            <h3 class="text-xl font-semibold">Awaiting Data</h3>
+                            <p>Your prediction results will appear here.</p>
+                        </div>
+                        
+                        <!-- Loading State -->
+                        <div id="loading-state" class="hidden text-gray-400">
+                            <div class="relative w-64 h-64 mx-auto mb-4">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="animate-spin rounded-full h-24 w-24 border-b-2 border-amber-400"></div>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold mt-4">Analyzing...</h3>
+                            <p>Our AI model is processing your data.</p>
+                        </div>
+                        
+                        <!-- Result State -->
+                        <div id="result-state" class="hidden">
+                            <div class="relative w-64 h-64 mx-auto">
+                                <svg class="w-full h-full" viewBox="0 0 120 120">
+                                    <defs>
+                                        <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" stop-color="#FBBF24" />
+                                            <stop offset="100%" stop-color="#D97706" />
+                                        </linearGradient>
+                                    </defs>
+                                    <circle class="gauge-circle-bg" cx="60" cy="60" r="54" stroke-width="12"></circle>
+                                    <circle id="gauge-circle" class="gauge-circle" cx="60" cy="60" r="54" stroke-width="12" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"></circle>
+                                </svg>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                    <span class="text-4xl font-extrabold text-white" id="rul-value">18.5</span>
+                                    <span class="text-lg font-medium text-gray-400">Years RUL</span>
+                                </div>
+                            </div>
+                             <h3 class="text-2xl font-bold text-white mt-6" id="result-title">Excellent Performance</h3>
+                            <p class="text-gray-300 max-w-sm mx-auto mt-2" id="result-description">The panel is operating within expected parameters with a long remaining useful life.</p>
+                            
+                            <div class="mt-6 space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-400">Prediction Confidence</span>
+                                    <span class="text-amber-400 font-bold" id="confidence-value">92%</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-400">Optimal Replacement</span>
+                                    <span class="text-amber-400 font-bold" id="replacement-year">2040</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <button id="save-prediction" class="btn-secondary py-2 px-4 rounded-lg font-medium">
+                                    <i class="fas fa-save mr-2"></i> Save Prediction
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Section -->
+        <section id="tech" class="py-20">
+             <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Technology Stack</h2>
+                    <p class="text-gray-400 mt-2">Built with industry-leading tools for robust and scalable AI solutions.</p>
+                </div>
+                <div class="max-w-4xl mx-auto flex flex-wrap justify-center items-center gap-x-8 gap-y-6">
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">NREL PVDAQ</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">Python</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">LSTM Networks</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">XGBoost</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">Flask / FastAPI</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">Docker</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">JSON API</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">TensorFlow</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">Scikit-learn</span>
+                     <span class="bg-gray-800 text-gray-300 font-medium px-4 py-2 rounded-lg">Pandas</span>
+                </div>
+                
+                <div class="mt-16 max-w-4xl mx-auto">
+                    <h3 class="text-2xl font-bold text-white text-center mb-8">How It Works</h3>
+                    <div class="glass-effect p-6 rounded-2xl">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div>
+                                <h4 class="text-xl font-bold text-white mb-4">Data Processing Pipeline</h4>
+                                <p class="text-gray-400 mb-4">Our system ingests solar panel performance data, environmental conditions, and material specifications to train predictive models.</p>
+                                <ul class="text-gray-400 space-y-2">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check text-amber-400 mr-2 mt-1"></i>
+                                        <span>Data cleaning and normalization</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check text-amber-400 mr-2 mt-1"></i>
+                                        <span>Feature engineering for degradation patterns</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check text-amber-400 mr-2 mt-1"></i>
+                                        <span>Time-series analysis for performance trends</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-800 p-4 rounded-lg">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-gray-300">Model Accuracy</span>
+                                    <span class="text-amber-400 font-bold">96.2%</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                    <div class="bg-amber-400 h-2.5 rounded-full" style="width: 96%"></div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between mt-6 mb-4">
+                                    <span class="text-gray-300">Prediction Speed</span>
+                                    <span class="text-amber-400 font-bold">0.8s</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                    <div class="bg-amber-400 h-2.5 rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900/50 border-t border-gray-800 mt-20">
+        <div class="container mx-auto px-6 py-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <svg class="h-8 w-8 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <span class="text-xl font-bold text-white">The Predictive Core</span>
+                    </div>
+                    <p class="text-gray-400">AI-powered solar panel longevity prediction for a sustainable energy future.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="text-gray-400 hover:text-amber-400 transition-colors">About</a></li>
+                        <li><a href="#methodology" class="text-gray-400 hover:text-amber-400 transition-colors">Methodology</a></li>
+                        <li><a href="#predictor" class="text-gray-400 hover:text-amber-400 transition-colors">Predictor Tool</a></li>
+                        <li><a href="#tech" class="text-gray-400 hover:text-amber-400 transition-colors">Technology</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-amber-400 transition-colors">Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-amber-400 transition-colors">API Reference</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-amber-400 transition-colors">Case Studies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-amber-400 transition-colors">Research Papers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4">Contact</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-gray-400">
+                            <i class="fas fa-envelope mr-2 text-amber-400"></i>
+                            <span>pandeypravesh777@gmail.com</span>
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i class="fas fa-phone mr-2 text-amber-400"></i>
+                            <span>+91 9987689377 </span>
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i class="fas fa-map-marker-alt mr-2 text-amber-400"></i>
+                            <span>Mumbai Maharashtra,IN</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
+                <p>&copy; 2025 The Predictive Core. All Rights Reserved.</p>
+                <p class="text-sm mt-2">A conceptual demonstration of a software-first AI/ML development approach.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <!-- Sign In Modal -->
+    <div id="signin-modal" class="fixed inset-0 z-50 modal-backdrop items-center justify-center hidden">
+        <div class="glass-effect rounded-2xl w-full max-w-md p-8 m-4 relative">
+            <button class="close-modal-btn absolute top-4 right-4 text-gray-500 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-2xl font-bold text-white text-center mb-6">Sign In</h2>
+            <form id="signin-form" class="space-y-6">
+                <div>
+                    <label for="signin-email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                    <input type="email" id="signin-email" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" required>
+                </div>
+                <div>
+                    <label for="signin-password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                    <input type="password" id="signin-password" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" required>
+                </div>
+                 <button type="submit" class="w-full btn-primary text-lg font-bold py-3 rounded-lg">Sign In</button>
+            </form>
+            <p class="text-center text-sm text-gray-400 mt-6">
+                No account? <button id="switch-to-signup" class="font-medium text-amber-400 hover:underline">Sign up</button>
+            </p>
+             <p class="text-center text-sm text-gray-400 mt-2">
+                <button id="switch-to-admin-signin" class="font-medium text-gray-500 hover:text-amber-400">Sign in as Admin</button>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="fixed inset-0 z-50 modal-backdrop items-center justify-center hidden">
+        <div class="glass-effect rounded-2xl w-full max-w-md p-8 m-4 relative">
+             <button class="close-modal-btn absolute top-4 right-4 text-gray-500 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-2xl font-bold text-white text-center mb-6">Create Account</h2>
+            <form id="signup-form" class="space-y-6">
+                 <div>
+                    <label for="signup-username" class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+                    <input type="text" id="signup-username" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" required>
+                </div>
+                <div>
+                    <label for="signup-email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                    <input type="email" id="signup-email" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" required>
+                </div>
+                <div>
+                    <label for="signup-password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                    <input type="password" id="signup-password" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" required>
+                </div>
+                <div>
+                    <label for="signup-confirm-password" class="block text-sm font-medium text-gray-300 mb-2">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" required>
+                </div>
+                 <button type="submit" class="w-full btn-primary text-lg font-bold py-3 rounded-lg">Create Account</button>
+            </form>
+             <p class="text-center text-sm text-gray-400 mt-6">
+                Already have an account? <button id="switch-to-signin" class="font-medium text-amber-400 hover:underline">Sign in</button>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Admin Sign In Modal -->
+    <div id="admin-signin-modal" class="fixed inset-0 z-50 modal-backdrop items-center justify-center hidden">
+        <div class="glass-effect rounded-2xl w-full max-w-md p-8 m-4 relative">
+            <button class="close-modal-btn absolute top-4 right-4 text-gray-500 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-2xl font-bold text-white text-center mb-6">Admin Sign In</h2>
+            <form id="admin-signin-form" class="space-y-6">
+                <div>
+                    <label for="admin-signin-email" class="block text-sm font-medium text-gray-300 mb-2">Admin Email</label>
+                    <input type="email" id="admin-signin-email" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" value="admin@predictivecore.com" required>
+                </div>
+                <div>
+                    <label for="admin-signin-password" class="block text-sm font-medium text-gray-300 mb-2">Admin Password</label>
+                    <input type="password" id="admin-signin-password" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400" value="admin123" required>
+                </div>
+                 <button type="submit" class="w-full btn-primary text-lg font-bold py-3 rounded-lg">Sign In as Admin</button>
+            </form>
+            <p class="text-center text-sm text-gray-400 mt-6">
+                <button id="switch-to-user-signin" class="font-medium text-gray-500 hover:text-amber-400">Sign in as User</button>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- State Management ---
+            let currentUser = null;
+            let savedPredictions = [];
+
+            // --- Notification System ---
+            function showNotification(type, title, message, duration = 5000) {
+                const notification = document.getElementById('notification');
+                const icon = document.getElementById('notification-icon');
+                const notificationTitle = document.getElementById('notification-title');
+                const notificationMessage = document.getElementById('notification-message');
+                
+                // Set icon and color based on type
+                let iconClass, bgColor;
+                switch(type) {
+                    case 'success':
+                        iconClass = 'fas fa-check-circle text-green-400';
+                        break;
+                    case 'error':
+                        iconClass = 'fas fa-exclamation-circle text-red-400';
+                        break;
+                    case 'warning':
+                        iconClass = 'fas fa-exclamation-triangle text-yellow-400';
+                        break;
+                    default:
+                        iconClass = 'fas fa-info-circle text-blue-400';
+                }
+                
+                icon.className = iconClass;
+                notificationTitle.textContent = title;
+                notificationMessage.textContent = message;
+                
+                notification.classList.remove('hidden');
+                
+                // Auto hide after duration
+                setTimeout(() => {
+                    notification.classList.add('hidden');
+                }, duration);
+            }
+            
+            document.getElementById('close-notification').addEventListener('click', () => {
+                document.getElementById('notification').classList.add('hidden');
+            });
+
+            // --- Element Selectors ---
+            const mainContent = {
+                authButtons: document.getElementById('auth-buttons'),
+                userMenu: document.getElementById('user-menu'),
+                welcomeMsg: document.getElementById('welcome-msg'),
+                dashboardLink: document.getElementById('dashboard-link'),
+                dashboardSection: document.getElementById('dashboard'),
+                userDashboardView: document.getElementById('user-dashboard-view'),
+                adminDashboardView: document.getElementById('admin-dashboard-view'),
+                dashUsername: document.getElementById('dash-username'),
+            };
+
+            const mobileContent = {
+                menuButton: document.getElementById('mobile-menu-button'),
+                menu: document.getElementById('mobile-menu'),
+                authButtons: document.getElementById('mobile-auth-buttons'),
+                userMenu: document.getElementById('mobile-user-menu'),
+                welcomeMsg: document.getElementById('mobile-welcome-msg'),
+                dashboardLink: document.getElementById('mobile-dashboard-link'),
+            };
+
+            const modals = {
+                signIn: document.getElementById('signin-modal'),
+                signUp: document.getElementById('signup-modal'),
+                adminSignIn: document.getElementById('admin-signin-modal'),
+            };
+
+            const forms = {
+                signIn: document.getElementById('signin-form'),
+                signUp: document.getElementById('signup-form'),
+                adminSignIn: document.getElementById('admin-signin-form'),
+            };
+            
+            // --- UI Update Function ---
+            function updateUI() {
+                if (currentUser) {
+                    // Logged In
+                    mainContent.authButtons.classList.add('hidden');
+                    mainContent.userMenu.classList.remove('hidden');
+                    mainContent.welcomeMsg.textContent = `Welcome, ${currentUser.name}`;
+                    mainContent.dashboardLink.classList.remove('hidden');
+                    mainContent.dashboardSection.classList.remove('hidden');
+
+                    mobileContent.authButtons.classList.add('hidden');
+                    mobileContent.userMenu.classList.remove('hidden');
+                    mobileContent.welcomeMsg.textContent = `Welcome, ${currentUser.name}`;
+                    mobileContent.dashboardLink.classList.remove('hidden');
+                    
+                    if (currentUser.isAdmin) {
+                        mainContent.userDashboardView.classList.add('hidden');
+                        mainContent.adminDashboardView.classList.remove('hidden');
+                    } else {
+                        mainContent.adminDashboardView.classList.add('hidden');
+                        mainContent.userDashboardView.classList.remove('hidden');
+                        mainContent.dashUsername.textContent = currentUser.name;
+                        updateRecentPredictions();
+                    }
+                } else {
+                    // Logged Out
+                    mainContent.authButtons.classList.remove('hidden');
+                    mainContent.userMenu.classList.add('hidden');
+                    mainContent.dashboardLink.classList.add('hidden');
+                    mainContent.dashboardSection.classList.add('hidden');
+
+                    mobileContent.authButtons.classList.remove('hidden');
+                    mobileContent.userMenu.classList.add('hidden');
+                    mobileContent.dashboardLink.classList.add('hidden');
+                }
+            }
+
+            // Update recent predictions in dashboard
+            function updateRecentPredictions() {
+                const container = document.getElementById('recent-predictions');
+                if (savedPredictions.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 text-center py-4">No saved predictions yet.</p>';
+                    return;
+                }
+                
+                container.innerHTML = savedPredictions.map(pred => `
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <div class="flex justify-between items-center">
+                            <span class="text-white font-medium">${pred.panelType} Panel</span>
+                            <span class="text-amber-400 font-bold">${pred.rul} years</span>
+                        </div>
+                        <div class="text-sm text-gray-400 mt-2">
+                            <div>Age: ${pred.age} years</div>
+                            <div>Date: ${new Date(pred.date).toLocaleDateString()}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // --- Modal Logic ---
+            const openModal = (modal) => {
+                Object.values(modals).forEach(m => {
+                    m.classList.add('hidden');
+                    m.classList.remove('flex');
+                });
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            };
+
+            const closeModal = () => {
+                 Object.values(modals).forEach(m => {
+                    m.classList.add('hidden');
+                    m.classList.remove('flex');
+                 });
+            };
+            
+            // Event listeners to open modals
+            document.getElementById('signin-btn').addEventListener('click', () => openModal(modals.signIn));
+            document.getElementById('mobile-signin-btn').addEventListener('click', () => openModal(modals.signIn));
+            document.getElementById('signup-btn').addEventListener('click', () => openModal(modals.signUp));
+            document.getElementById('mobile-signup-btn').addEventListener('click', () => openModal(modals.signUp));
+
+            // Event listeners for modal switching
+            document.getElementById('switch-to-signup').addEventListener('click', () => openModal(modals.signUp));
+            document.querySelectorAll('#switch-to-signin').forEach(el => el.addEventListener('click', () => openModal(modals.signIn)));
+            document.getElementById('switch-to-admin-signin').addEventListener('click', () => openModal(modals.adminSignIn));
+            document.getElementById('switch-to-user-signin').addEventListener('click', () => openModal(modals.signIn));
+
+            // Event listener for closing modals
+            document.querySelectorAll('.close-modal-btn').forEach(btn => btn.addEventListener('click', closeModal));
+            Object.values(modals).forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) closeModal();
+                });
+            });
+
+            // --- Authentication Logic ---
+            forms.signUp.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('signup-username').value;
+                const email = document.getElementById('signup-email').value;
+                const password = document.getElementById('signup-password').value;
+                const confirmPassword = document.getElementById('signup-confirm-password').value;
+                
+                if (password !== confirmPassword) {
+                    showNotification('error', 'Sign Up Failed', 'Passwords do not match');
+                    return;
+                }
+                
+                // SIMULATE: In a real app, you'd register the user in a database.
+                currentUser = { name: username, email: email, isAdmin: false };
+                closeModal();
+                updateUI();
+                showNotification('success', 'Account Created', `Welcome to The Predictive Core, ${username}!`);
+            });
+
+            forms.signIn.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('signin-email').value;
+                const password = document.getElementById('signin-password').value;
+                
+                // SIMULATE: In a real app, you'd verify credentials with a backend.
+                if (email && password) {
+                    const username = email.split('@')[0];
+                    currentUser = { name: username, email: email, isAdmin: false };
+                    closeModal();
+                    updateUI();
+                    showNotification('success', 'Sign In Successful', `Welcome back, ${username}!`);
+                } else {
+                    showNotification('error', 'Sign In Failed', 'Please check your credentials');
+                }
+            });
+
+            forms.adminSignIn.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('admin-signin-email').value;
+                const pass = document.getElementById('admin-signin-password').value;
+                
+                // SIMULATE: Check for hardcoded admin credentials
+                if (email === 'admin@predictivecore.com' && pass === 'admin123') {
+                     currentUser = { name: 'Admin', email: email, isAdmin: true };
+                     closeModal();
+                     updateUI();
+                     showNotification('success', 'Admin Access', 'Welcome to the Admin Dashboard!');
+                } else {
+                    showNotification('error', 'Admin Sign In Failed', 'Invalid admin credentials');
+                }
+            });
+
+            const handleLogout = () => {
+                currentUser = null;
+                updateUI();
+                showNotification('info', 'Signed Out', 'You have been successfully signed out.');
+            };
+            
+            document.getElementById('logout-btn').addEventListener('click', handleLogout);
+            document.getElementById('mobile-logout-btn').addEventListener('click', handleLogout);
+
+            // --- Mobile Menu Toggle ---
+            mobileContent.menuButton.addEventListener('click', () => {
+                mobileContent.menu.classList.toggle('hidden');
+            });
+
+            // --- Prediction Form Logic ---
+            const predictionForm = document.getElementById('prediction-form');
+            const initialState = document.getElementById('initial-state');
+            const loadingState = document.getElementById('loading-state');
+            const resultState = document.getElementById('result-state');
+            const predictButton = document.getElementById('predict-button');
+            const predictButtonText = document.getElementById('predict-button-text');
+            const savePredictionBtn = document.getElementById('save-prediction');
+
+            predictionForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const panelAge = parseFloat(document.getElementById('panel-age').value);
+                const panelType = document.getElementById('panel-type').value;
+                const irradiance = parseFloat(document.getElementById('irradiance').value);
+                const temperature = parseFloat(document.getElementById('temperature').value);
+                const humidity = parseFloat(document.getElementById('humidity').value);
+
+                if (isNaN(panelAge) || isNaN(irradiance) || isNaN(temperature) || isNaN(humidity)) {
+                    showNotification('error', 'Invalid Input', 'Please fill in all fields with valid numbers.');
+                    return;
+                }
+
+                initialState.classList.add('hidden');
+                resultState.classList.add('hidden');
+                loadingState.classList.remove('hidden');
+                predictButton.disabled = true;
+                predictButtonText.textContent = 'Analyzing...';
+                
+                // Simulate API call to backend
+                setTimeout(() => {
+                    // Enhanced prediction algorithm
+                    let baseRUL = 25;
+                    let ageFactor = panelAge * 1.15;
+                    let tempFactor = (Math.max(0, temperature - 20)) * 0.1;
+                    let irradianceFactor = (Math.max(0, irradiance - 5)) * 0.2;
+                    let humidityFactor = (Math.max(0, humidity - 50)) * 0.05;
+                    
+                    let typeMultiplier = 1;
+                    if (panelType === 'mono') typeMultiplier = 1.1;
+                    else if (panelType === 'poly') typeMultiplier = 1;
+                    else if (panelType === 'thin') typeMultiplier = 0.9;
+                    
+                    let predictedRUL = (baseRUL - (ageFactor + tempFactor + irradianceFactor + humidityFactor)) * typeMultiplier;
+                    predictedRUL = Math.max(0, Math.min(25, predictedRUL.toFixed(1)));
+                    
+                    // Calculate confidence based on input quality
+                    let confidence = 85 + Math.random() * 10;
+                    
+                    displayResults(predictedRUL, confidence, panelType, panelAge);
+
+                    predictButton.disabled = false;
+                    predictButtonText.textContent = 'Calculate RUL';
+                }, 2000); 
+            });
+
+            function displayResults(rul, confidence, panelType, panelAge) {
+                loadingState.classList.add('hidden');
+                resultState.classList.remove('hidden');
+
+                const rulValueEl = document.getElementById('rul-value');
+                const resultTitleEl = document.getElementById('result-title');
+                const resultDescEl = document.getElementById('result-description');
+                const confidenceValueEl = document.getElementById('confidence-value');
+                const replacementYearEl = document.getElementById('replacement-year');
+                const gaugeCircle = document.getElementById('gauge-circle');
+
+                rulValueEl.textContent = rul;
+                confidenceValueEl.textContent = `${confidence.toFixed(0)}%`;
+                
+                const currentYear = new Date().getFullYear();
+                const replacementYear = currentYear + Math.floor(parseFloat(rul));
+                replacementYearEl.textContent = replacementYear;
+                
+                let title, description;
+                if (rul > 18) {
+                    title = "Excellent Condition";
+                    description = "The panel is operating optimally with a long remaining useful life. No immediate action required.";
+                } else if (rul > 12) {
+                    title = "Good Condition";
+                    description = "Performance is within expected degradation curves. Regular monitoring is recommended.";
+                } else if (rul > 6) {
+                    title = "Moderate Degradation";
+                    description = "The panel shows signs of significant wear. Consider scheduling an inspection and planning for future replacement.";
+                } else if (rul > 2) {
+                    title = "High Degradation";
+                    description = "Performance has significantly declined. Replacement should be considered in the near future.";
+                } else {
+                    title = "End of Life Approaching";
+                    description = "Performance is critically low. Replacement is highly recommended to maintain system efficiency.";
+                }
+
+                resultTitleEl.textContent = title;
+                resultDescEl.textContent = description;
+                
+                const percentage = (rul / 25) * 100;
+                const offset = 100 - percentage;
+                gaugeCircle.style.strokeDashoffset = offset;
+                
+                // Store current prediction data for saving
+                window.currentPrediction = {
+                    rul: rul,
+                    panelType: panelType,
+                    age: panelAge,
+                    date: new Date().toISOString()
+                };
+            }
+
+            // Save prediction functionality
+            savePredictionBtn.addEventListener('click', () => {
+                if (!currentUser) {
+                    showNotification('warning', 'Authentication Required', 'Please sign in to save predictions.');
+                    openModal(modals.signIn);
+                    return;
+                }
+                
+                if (window.currentPrediction) {
+                    savedPredictions.unshift(window.currentPrediction);
+                    if (savedPredictions.length > 5) {
+                        savedPredictions = savedPredictions.slice(0, 5);
+                    }
+                    updateRecentPredictions();
+                    showNotification('success', 'Prediction Saved', 'Your prediction has been saved to your dashboard.');
+                }
+            });
+
+            // Initialize the UI
+            updateUI();
+        });
+    </script>
+</body>
+</html>
