@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Solar Saathi — AI-powered solar panel lifespan prediction using hybrid LSTM+XGBoost models. Predict degradation rates and remaining useful life before installation.">
+  <meta name="description"
+    content="Solar Saathi — AI-powered solar panel lifespan prediction using hybrid LSTM+XGBoost models. Predict degradation rates and remaining useful life before installation.">
   <title>Solar Saathi — AI Solar Panel Lifespan Prediction</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>">
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>">
 </head>
+
 <body>
 
   <!-- Animated Background -->
@@ -43,8 +47,8 @@
           <span class="gradient-text">Lifespan Before Installation</span>
         </h1>
         <p>
-          SolarSaathi uses a hybrid LSTM + XGBoost model trained on authentic NASA climate data 
-          spanning 120 global locations over 10+ years to accurately predict photovoltaic degradation 
+          SolarSaathi uses a hybrid LSTM + XGBoost model trained on authentic NASA climate data
+          spanning 120 global locations over 10+ years to accurately predict photovoltaic degradation
           rates and remaining useful life — before you install a single panel.
         </p>
         <div class="hero-buttons">
@@ -81,7 +85,8 @@
   <section id="predict" class="container">
     <div class="section-header">
       <h2>🔮 Predict Panel <span class="text-gradient">Lifespan</span></h2>
-      <p>Enter your installation coordinates and panel configuration to get an AI-powered lifespan prediction backed by real climate data.</p>
+      <p>Enter your installation coordinates and panel configuration to get an AI-powered lifespan prediction backed by
+        real climate data.</p>
     </div>
 
     <div class="predict-wrapper">
@@ -100,11 +105,13 @@
           <div class="form-row">
             <div class="form-group">
               <label for="latitude">Latitude</label>
-              <input type="number" id="latitude" class="form-control" placeholder="e.g. 19.076" step="0.001" min="-90" max="90" required>
+              <input type="number" id="latitude" class="form-control" placeholder="e.g. 19.076" step="0.001" min="-90"
+                max="90" required>
             </div>
             <div class="form-group">
               <label for="longitude">Longitude</label>
-              <input type="number" id="longitude" class="form-control" placeholder="e.g. 72.878" step="0.001" min="-180" max="180" required>
+              <input type="number" id="longitude" class="form-control" placeholder="e.g. 72.878" step="0.001" min="-180"
+                max="180" required>
             </div>
           </div>
 
@@ -149,7 +156,7 @@
           <!-- Tilt Angle -->
           <div class="form-group">
             <label for="tiltAngle">
-              Tilt Angle 
+              Tilt Angle
               <span class="range-value" id="tiltValue">25°</span>
             </label>
             <div class="range-group">
@@ -191,19 +198,23 @@
           <div style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8;">
             <p style="margin-bottom: 16px;">
               <strong style="color: var(--text-primary);">1. Real Climate Data</strong><br>
-              We fetch 10+ years of authentic NASA POWER satellite data for your exact coordinates — temperature, humidity, irradiance, UV, wind, and precipitation.
+              We fetch 10+ years of authentic NASA POWER satellite data for your exact coordinates — temperature,
+              humidity, irradiance, UV, wind, and precipitation.
             </p>
             <p style="margin-bottom: 16px;">
               <strong style="color: var(--text-primary);">2. LSTM Temporal Analysis</strong><br>
-              Our Bidirectional LSTM network processes monthly climate sequences to extract temporal degradation patterns — capturing thermal cycling, humidity ingress, and UV damage.
+              Our Bidirectional LSTM network processes monthly climate sequences to extract temporal degradation
+              patterns — capturing thermal cycling, humidity ingress, and UV damage.
             </p>
             <p style="margin-bottom: 16px;">
               <strong style="color: var(--text-primary);">3. XGBoost Prediction</strong><br>
-              The XGBoost regressor combines LSTM degradation embeddings with your panel configuration (technology, mounting, tilt) to predict Remaining Useful Life with R² > 0.96.
+              The XGBoost regressor combines LSTM degradation embeddings with your panel configuration (technology,
+              mounting, tilt) to predict Remaining Useful Life with R² > 0.96.
             </p>
             <p>
               <strong style="color: var(--text-primary);">4. Physics-Informed Modeling</strong><br>
-              Degradation rates use Arrhenius equation (thermal stress), Fick's law (humidity ingress), and IEC 61215 standards for industrially-validated predictions.
+              Degradation rates use Arrhenius equation (thermal stress), Fick's law (humidity ingress), and IEC 61215
+              standards for industrially-validated predictions.
             </p>
           </div>
         </div>
@@ -289,7 +300,8 @@
       <div class="confidence-bar">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span style="font-weight: 600; font-size: 0.9rem;">🤖 Model Confidence</span>
-          <span style="font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--accent-emerald);" id="confidenceValue">—</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--accent-emerald);"
+            id="confidenceValue">—</span>
         </div>
         <div class="bar-track">
           <div class="bar-fill" id="confidenceBar" style="width: 0%;"></div>
@@ -345,8 +357,8 @@
         <div class="phase-tag">Phase I — Pre-Installation</div>
         <h3>📍 SVR Baseline Estimation</h3>
         <p>
-          Support Vector Regression with RBF kernel analyzes geo-climatic variables (temperature, humidity, GHI, UV) 
-          and system configuration to estimate baseline degradation rate before commissioning. 
+          Support Vector Regression with RBF kernel analyzes geo-climatic variables (temperature, humidity, GHI, UV)
+          and system configuration to estimate baseline degradation rate before commissioning.
           Achieves R² of 0.962 on NREL PVDAQ-validated data.
         </p>
         <div class="tech-stack">
@@ -360,8 +372,8 @@
         <div class="phase-tag">Phase II — Temporal Analysis</div>
         <h3>🧬 LSTM Degradation Encoder</h3>
         <p>
-          Bidirectional LSTM processes 12-month sequences of climate telemetry (power, irradiance, temperature) 
-          to extract 64-dimensional latent degradation signatures. Filters transient weather noise from 
+          Bidirectional LSTM processes 12-month sequences of climate telemetry (power, irradiance, temperature)
+          to extract 64-dimensional latent degradation signatures. Filters transient weather noise from
           genuine long-term deterioration patterns.
         </p>
         <div class="tech-stack">
@@ -375,8 +387,8 @@
         <div class="phase-tag">Phase II — RUL Prediction</div>
         <h3>🎯 XGBoost RUL Estimator</h3>
         <p>
-          Gradient-boosted trees combine LSTM temporal embeddings with static metadata (module technology, 
-          mounting type, installation age, climate zone) for Remaining Useful Life prediction. 
+          Gradient-boosted trees combine LSTM temporal embeddings with static metadata (module technology,
+          mounting type, installation age, climate zone) for Remaining Useful Life prediction.
           Handles mixed data types and nonlinear interactions with RMSE &lt; 1.5 years.
         </p>
         <div class="tech-stack">
@@ -399,32 +411,38 @@
       <div class="feature-card">
         <div class="feature-icon">🛰️</div>
         <h4>NASA Satellite Data</h4>
-        <p>Authentic climate data from NASA POWER API — 10+ years of temperature, humidity, irradiance, UV index, and precipitation for any coordinates worldwide.</p>
+        <p>Authentic climate data from NASA POWER API — 10+ years of temperature, humidity, irradiance, UV index, and
+          precipitation for any coordinates worldwide.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🧪</div>
         <h4>Physics-Informed Model</h4>
-        <p>Degradation calculations use Arrhenius equation (thermal stress), Fick's law (humidity ingress), and IEC 61215 damp heat standards.</p>
+        <p>Degradation calculations use Arrhenius equation (thermal stress), Fick's law (humidity ingress), and IEC
+          61215 damp heat standards.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🌍</div>
         <h4>Global Coverage</h4>
-        <p>Trained on 120+ locations across 6 continents and 15 climate zones — from Arctic cold to Saharan heat, tropical humidity to Mediterranean mild.</p>
+        <p>Trained on 120+ locations across 6 continents and 15 climate zones — from Arctic cold to Saharan heat,
+          tropical humidity to Mediterranean mild.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">📊</div>
         <h4>Real-Time Inference</h4>
-        <p>RESTful API serves predictions in seconds — FastAPI backend with CORS support for seamless integration with monitoring dashboards and SCADA systems.</p>
+        <p>RESTful API serves predictions in seconds — FastAPI backend with CORS support for seamless integration with
+          monitoring dashboards and SCADA systems.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🔋</div>
         <h4>LCOE Optimization</h4>
-        <p>Accurate degradation forecasts enable realistic Levelized Cost of Energy calculations, reducing investor uncertainty and financing costs.</p>
+        <p>Accurate degradation forecasts enable realistic Levelized Cost of Energy calculations, reducing investor
+          uncertainty and financing costs.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🏭</div>
         <h4>B2B Ready</h4>
-        <p>Containerizable microservice architecture designed for enterprise deployment — integrates with existing monitoring infrastructure via Docker and FastAPI.</p>
+        <p>Containerizable microservice architecture designed for enterprise deployment — integrates with existing
+          monitoring infrastructure via Docker and FastAPI.</p>
       </div>
     </div>
   </section>
@@ -441,17 +459,20 @@
       </div>
       <div style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8;">
         <p style="margin-bottom: 12px;">
-          <strong style="color: var(--text-primary);">SolarSaathi: A Hybrid Framework for Photovoltaic Degradation and Life Prediction</strong>
+          <strong style="color: var(--text-primary);">SolarSaathi: A Hybrid Framework for Photovoltaic Degradation and
+            Life Prediction</strong>
         </p>
         <p style="margin-bottom: 12px;">
-          <em>Pravesh Pandey</em> — Dept. of Computer Engineering, Thakur College of Engineering & Technology, Mumbai, India
+          <em>Pravesh Pandey</em> — Dept. of Computer Engineering, Thakur College of Engineering & Technology, Mumbai,
+          India
         </p>
         <p style="margin-bottom: 12px;">
-          <em>Ms. Veena Kulkarni</em> — Asst. Professor, Computer Engineering, Thakur College of Engineering & Technology, Mumbai, India
+          <em>Ms. Veena Kulkarni</em> — Asst. Professor, Computer Engineering, Thakur College of Engineering &
+          Technology, Mumbai, India
         </p>
         <p>
-          This research introduces SolarSaathi, a hybrid software-centric framework that bridges the gap between 
-          pre-installation performance forecasting and post-deployment predictive maintenance, offering an end-to-end 
+          This research introduces SolarSaathi, a hybrid software-centric framework that bridges the gap between
+          pre-installation performance forecasting and post-deployment predictive maintenance, offering an end-to-end
           solution for lifecycle management of photovoltaic assets.
         </p>
       </div>
@@ -463,12 +484,13 @@
     <div class="container">
       <p>☀️ <strong>Solar Saathi</strong> — Empowering Solar Energy Through AI</p>
       <p class="credits">
-        Data Source: NASA POWER Project (power.larc.nasa.gov) • 
+        Data Source: NASA POWER Project (power.larc.nasa.gov) •
         Built with TensorFlow, XGBoost, FastAPI & ❤️
       </p>
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="/static/app.js"></script>
 </body>
+
 </html>

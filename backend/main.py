@@ -126,10 +126,18 @@ async def get_sample_locations():
     }
 
 
-# Mount frontend at the end after all routes
+# Mount static files
 frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
 if os.path.exists(frontend_dir):
-    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
+    app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+
+@app.get("/")
+async def root():
+    """Serve the frontend."""
+    index_path = os.path.join(frontend_dir, "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
+    return {"message": "Solar Saathi API is running."}
 
 
 if __name__ == "__main__":
