@@ -1,0 +1,286 @@
+SolarSathi: A Hybrid Framework for Photovoltaic Degradation
+ and Life Prediction
+
+Pravesh Pandey
+Dept. of Computer Engineering 
+Thakur College Of engineering & Technology
+Mumbai , India
+Ms. Veena Kulkarni
+Asst. Professor Computer Engineering
+Thakur College of  Engineering & Technology
+Mumbai , India
+
+
+Abstract:- Accurate prediction of an solar panel life span in an particular region  is critical. The industries make solar panels give warranty of panels that has been tested in lab not in actual environment. It has become critical to minimized the levelized cost of energy (LCOE).  However, existing prognostic methods face a structural limitation. Physics-based models often fail to capture the cumulative effects of simultaneous environmental stressors, such as humidity cycles and thermal fatigue. There are none platform that can predict solar panel lifespan during pre-installation planning. 
+
+To bridge this gap, this paper introduce solar-saathi a user centric B2B model that will predict life span of an soalr panel before installation only in inserting co-ordinates of that particular region. Our model consist of three phases.
+
+Phase 1: This phase is all about baseline preparation of our machine learning model. In this phase we have build and train our Support Vector Regression (SVR) model and trained it by using NREL PVDAQ datasets for the northen and southern part of the the india and for the cold region we have used NASA integrated satellite data. Support Vector Regression (SVR)model utilizes static geo-climatic data to predict baseline degradation before commissioning. 
+
+Phase 2: In this phase hybrid machine learning model is trained on real time data. The two model 
+
+
+we used are LSTM and XG-Boost. So we have used two model first one is LSTM and second one is XG-
+
+Boost this will analyze the static data as well as relational data too from environmental noise, enabling real-time RUL updates. We will make an hybrid model by combaining this two model and containerize it into an API or an Microservices  the  system ensures seamless integration with existing monitoring infrastructure.                
+
+Introduction:- Solar panel installation surpassing the terawatt threshold so the primary challenge in the energy sector has been shifted from capacity expansion to asset management and reliability of the photovoltaic cells. Big companies and stakeholders  are no longer need to know how much power a plant can produce they also need to know how longer it will sustain that production. Errors in long term forecasts disrupt planning and inflate the levilized cost of energy(LCOE). 
+The prediction of life –span of an solar panels or photovoltaic cells is really complicated  because of its non-linear nature of degradation. The solar panels received continuous heat radiance which tend to expansion and contraction of electrons this lead to breakage of hard layer of plastics and humidity enters inside the panels so eventually it leads to degradation of panels or photovoltaic cells. Standard warranty given by companies does not promise exponential degradation in such circumstances so expected power generation and life-span of an photovoltaic cells disturb at large scale and asset needs to be protected. 
+The core problem is we use separate ways to predict how well a project like power plant will work. The flawed methods are 1) The physics-based and 2) The AI / Machine Learning based The Physics-Based method uses scientific rules to predict how machinery should behave but it fails when complex , mess weather hits the surrounding. 
+To tackle this problem we are building an Solar-Sathi which includes two phases. The first phse consist of an Math Trick which will be our base line an SVR (support Vector machine ) model which make an good guess. The second phase consist of an Hybrid model It includes LSTM+XG-Boost model to track the system after it running.  It will be an unified predictive system that will integrate both pre-installation and post-deployment analysis within an single software architecture       
+Literature Survey:- Predicting Life span of an Photovoltaic cell is hard. Its just not an physics problem its an mix of material science and data analysis. In the surrounding areas where panels had been installed weather pattern changes and stress factors like heat, wind , humidity , etc pile up on top of the roof of each other panels this lead to degradation of solar panels.    
+A. Physical and Chemical Processes Influencing PV Aging
+Humidity is one of the biggest reason and threats for the degradation of the solar modules. Over time period after the installation of the panels moisture sneaks in through protectiong layers which is encapsulated hard layer.  Once the moisture sneak in it creates chemical reaction that produces acetic acid which tends to corrode metallic connections. According to lab test this happes because of higher heat. But in the field its an constant cycle of heat and cold this used to done real damage to the panels.      
+2) Thermal Cycling and Mechanical Fatigue
+During day-night Temperature swings and directly impact on hardware. As the day heats up and cool down different parts of the solar modules like glass, soldering, and encapsulated plastic covering expand and shrinks at different rate. The constant tug-of –war creates stress leading to cracks and broken solder joints. The winds sometimes flow slow an sometimes very high this also leads to shaken of panels at the same time.    
+3) UV Exposure Degradation
+The sun itself damages the panels years of UV exposure cook the the encapsulant layers turning them into yellow or brown . This cts like an blockage and stops light from reaching to solar cells. This tends to lower the energy output. Modelling this is very tricky as intensity of UV rays changes depending on the location itself.  
+B. Evolution of Techniques
+1) Early Statistical and Time-Series Approaches
+During early days researchers used tools like ARIMA (Auto-Regressive integrated moving Average)  it is widely used for statistical, linear , univariate time-series forecasting uses past data points to predict future values. Such tools were fine to predict trends but they had assumed the world works on straight lines that is linearly.. So this older models often gave wrong predictions when tested on real world weather data.
+2) The Machine Learning Era
+As collection of data increases we move to the machine learning models, specifically SVR (Support Vector Regression) model. SVR was important model it could  handle complex , non-linear relationship data like how humidity and temperature work together to rot an planet . It proved much more accurate then the old statistical methods especially when data is limited.   
+3) Deep Learning memory models:
+To analyze  long  term trends researchers moved to Deep learning models. Recurrent neural networks like LSTM (Long-short term memory). They became popular because they consist of memory. They can look past history of panels to predicts its future. Somehow LSTM has a demerit or blind spot they are not good at handling fixed details like specific brand of the module and how it has been mounted.      
+4) Ensemble Models:
+When we were able to collect long term data at the same time Ensemble model like Randon Foresst , XG-Boot appeared. This model were great at processing statistics data the the result were really accurate. But they don’t understand sequence or time-series data naturally. 
+C. Need Of An Hybrid Model:
+After researching all the aspects we came to an conclusion that no single model is accurate and fits in. Some are good at time-series, some are good at facts. Physics models were accurate but too rigid and work on linear data. LSTM are good but miss the context regarding statistics data. Ensemble models get the context but miss the timeline. So we can conclusion to an Hybrid approach . This is why we developed an solar-sathi like platform. It combines memory of an LSTM with descision making power of XG-Boost giving us the prediction that is both stable and realistic.        
+III. Methodology
+The SolarSathi framework was developed using a software-centric engineering approach to ensure both high predictive accuracy and seamless deployment in real-world PV monitoring environments. The design philosophy emphasizes modularity, scalability, and interoperability with industrial data acquisition systems.The overall workflow consists of two complementary stages:
+Phase I- Pre-installation degradation estimation
+Phase II -Operational RUL forecasting using live telemetry
+Although these phases differ in data type and modeling strategy, they are integrated within a unified software pipeline for consistent lifecycle management.
+A. Phase I: Pre-Installation Modeling Using Static Features
+1) Data Sources and Selection Criteria
+The first stage of SolarSathi estimates degradation rates before a PV system becomes operational. In this phase, the model relies solely on static attributes—site conditions and system  configurations because historical telemetry is unavailable at this stage. Data were obtained from the National Renewable Energy Laboratory (NREL) PVDAQ repository, which provides long-term field performance data from geographically diverse installations. Only sites with more than five years of stable operation were included, while those exhibiting inverter faults, communication interruptions, or abrupt anomalies were excluded to ensure the model learned genuine degradation patterns rather than noise.
+
+
+
+
+
+
+
+2) Static Feature Engineering
+In alignment with industry practices, static parameters were grouped into two main categories:
+a) Geo-climatic variables – extracted from the NSRDB dataset, including:
+Long-term mean ambient temperature Annual Global Horizontal Irradiance (GHI)
+Regional humidity and precipitation indices
+These parameters encode environmental stress factors such as thermal cycling intensity, UV exposure levels, and moisture-induced degradation risk.
+b) System configuration parameters – describing module and installation characteristics:
+Module technology (e.g., Mono-Si, Poly-Si, CdTe, CIGS)
+Mounting type (fixed-tilt, rooftop, open-rack)
+Orientation and tilt angle
+These parameters influence heat dissipation, air circulation, and dust accumulation—factors strongly correlated with long-term performance decay.
+3) Model Architecture: Support Vector Regression (SVR)
+A Support Vector Regression (SVR) model with an RBF kernel was selected due to its robustness in handling moderate dataset sizes and non-linear feature relationships. The RBF kernel effectively models complex interactions, including:
+
+
+
+
+
+
+
+
+
+Low degradation in humid yet cooler climates
+Accelerated aging in hot and dusty regions
+Nonlinear coupling of irradiance cycles and temperature stress
+Unlike linear regression, SVR optimizes a margin-based loss function, making it resilient to outliers and overfitting critical for diverse climatic datasets.
+4) Phase I Outcomes
+The trained SVR module provides an estimated annual 
+degradation rate for a given site before deployment. This information is instrumental in:
+LCOE modeling for investment analysis
+Warranty formulation and performance guarantee structuring
+Financial due diligence and bankability assessment
+Thus, Phase I functions as a decision-support tool for developers and investors, enabling more accurate forecasting of long-term asset performance before commissioning.
+B. Phase II: Operational RUL Forecasting Using Hybrid LSTM–XGBoost Model
+Once the plant becomes operational, SolarSathi transitions into its real-time predictive mode. This phase combines temporal learning with contextual regression to deliver accurate Remaining Useful Life (RUL) forecasts.
+1) System Architecture
+Phase II integrates two learning components:
+
+
+
+
+
+
+
+LSTM Network: captures sequential degradation patterns from telemetry data.
+XGBoost Regressor: combines the temporal embeddings with static and contextual features to predict RUL.
+This design leverages the strengths of both deep learning and ensemble modeling—LSTM for time dependency and XGBoost for interpretability and tabular data handling.
+2) Temporal Modeling via LSTM
+The LSTM network processes input windows of historical telemetry typically  30-day  sequences of power, irradiance, and  temperature. Instead of predicting instantaneous output, the model generates a latent degradation signature summarizing long-term behavior. This signature provides:
+Robustness to sensor noise and short-term weather fluctuations
+Reduced data dimensionality for efficient processing
+Generalization across multiple PV systems with similar conditions
+3) RUL Estimation with XGBoost
+The second stage employs XGBoost, which excels in handling mixed numerical and categorical data while maintaining high computational efficiency. It correlates the LSTM embeddings with static metadata (module type, installation age, climate zone, etc.) to estimate the remaining Operational Lifetime .XGBoost’s gradient-boosting architecture allows it to model non-linear interactions, missing data points, and abrupt degradation shifts challenges commonly encountered in real-world PV telemetry.
+
+
+
+
+
+
+
+4) Software Architecture and Deployment
+To ensure industrial applicability, SolarSathi was implemented as a microservice architecture:
+FastAPI serves as the model inference layer, offering REST-based integration with SCADA and monitoring dashboards.The entire system, including dependencies and models, is containerized using Docker for reproducibility and ease of deployment across cloud and edge environments.
+The workflow follows an offline–online paradigm:
+Offline phase: periodic retraining using updated PVDAQ and plant-specific datasets.
+Online phase: real-time inference with low latency and minimal computational overhead.
+This architecture ensures adaptability, scalability, and maintainability across distributed solar asset portfolios.
+IV. Experimental Evaluation and Results:
+A. Objective and Evaluation Framework
+The primary goal of this evaluation is to determine whether the SolarSathi framework can accurately estimate both degradation rates and Remaining Useful Life (RUL) under conditions that approximate real-world PV operations. All experiments were conducted using authentic field data rather than synthetic or laboratory-generated datasets, ensuring that model validation aligns with industrial deployment conditions.
+To simulate real-world   predictive  scenarios,  the dataset was partitioned chronologically using an 80:20 time-based split -with the initial 80% used for training and the final 20% reserved for testing.
+
+
+
+
+
+
+This approach prevents data leakage and ensures that models are evaluated on unseen future observation .Performance was assessed using two metrics widely recognized in PV reliability research:
+Coefficient of Determination (R²): quantifies the proportion of variance explained by the model.Root Mean Square Error (RMSE): measures average prediction error in units of years, offering a direct interpretation for RUL forecasting.
+These metrics together provide a balanced view of both accuracy and consistency in model performance.
+B. Phase I Results: Pre-Installation Degradation Estimation
+To evaluate static feature-based degradation prediction, three models were compared:
+Multiple Linear Regression (MLR)
+Random Forest Regressor
+Support Vector Regression (SVR) with an RBF kernel
+1) Performance Comparison
+The MLR baseline achieved an R² of approximately 0.62, revealing its inability to capture the non-linear dependencies between environmental factors and material degradation.
+The Random Forest model showed improved generalization with an R² close to 0.89, indicating its capacity to represent partial feature interactions. However, it exhibited performance variability across different site categories, limiting its robustness.
+The SVR-RBF model achieved the highest accuracy with an R² of 0.962 and the lowest RMSE, confirming its ability to generalize across diverse climatic and technological conditions.
+
+
+
+
+
+
+2) Engineering Interpretation
+From an applied engineering standpoint, the SVR module’s high correlation with observed degradation rates provides several advantages:
+Enables quantitative comparison among candidate sites during project planning. Supports realistic LCOE calculations, avoiding overly conservative degradation assumptions.
+Enhances the accuracy of warranty and performance guarantee modeling.
+The close alignment between predicted and observed degradation trends demonstrates that SolarSathi’s static modeling phase captures environmental stress patterns effectively even in the absence of operational data.
+C. Phase II Results: Operational RUL Forecasting
+In the operational phase, the hybrid LSTM–XGBoost model was benchmarked against traditional regression and ensemble approaches commonly used in PV prognostics.
+1) Comparative Analysis
+Linear regression models achieved an R² of approximately 0.82, with RMSE values exceeding 2.5 years, sufficient for general trends but inadequate for precision maintenance scheduling .Random Forest-based methods improved accuracy to around R² = 0.92 and RMSE ≈ 1.8 years, confirming their strength in modeling non-linear interactions but exposing their inability to learn sequential degration behavior .In contrast, the SolarSathi hybrid model outperformed all baselines, reaching R² > 0.96 and RMSE < 1.5 years, thereby demonstrating superior predictive power and operational reliability.
+
+
+
+
+
+
+
+2) Model Stability and Robustness
+SolarSathi exhibited strong temporal stability, maintaining consistent performance across multiple climatic conditions. Unlike models sensitive to short-term fluctuations, the hybrid architecture effectively distinguished long-term degradation trends from seasonal variations.
+The LSTM component filtered transient effects caused by irradiance or temperature anomalies, while XGBoost contextualized the extracted features with site-level metadata  resulting in stable, interpretable, and physically meaningful RUL estimates.
+D. Practical Implications
+From a plant operation and management perspective, even a one-year improvement in RUL prediction accuracy can significantly reduce operational uncertainty. More reliable forecasts allow:
+Optimized maintenance scheduling and spare inventory management.
+Informed decisions on module repowering or inverter replacement timing.
+Improved financial planning through precise long-term revenue projection.
+The hybrid design’s adaptability ensures that RUL estimates evolve dynamically with incoming telemetry, offering a continuously updated picture of system health a critical advantage in large-scale solar fleet management.
+E. Error Analysis and Observations
+Error analysis revealed that most residuals were associated with short-term weather anomalies or 
+
+
+
+
+
+
+
+incomplete telemetry data. Even in such cases, the SolarSathi model demonstrated strong resilience, maintaining prediction errors below 1.5 years for over 90% of the test samples .
+This indicates that the system’s learning architecture successfully isolates persistent degradation trends from short-lived data distortions, thus ensuring reliability under real operating conditions.
+V. Discussion and Broader Implications
+The outcomes of the SolarSathi framework emphasize the value of a lifecycle-aware predictive strategy in photovoltaic asset management. By unifying pre-installation modeling with real-time degradation tracking, the framework bridges a longstanding methodological gap between early project planning and operational maintenance.
+A. Integration of Static and Temporal Modeling
+One of the key findings from this research is that static environmental and configuration features alone contain significant predictive  information when   modeled using  non-linear  algorithms. Traditional industry practices often treat these attributes such as irradiance, humidity, and mounting configuration as secondary parameters. However, the  results indicate that these variables, when processed through SVR with RBF kernels,  can explain  over 95%  of the variance in long-term degration rates. This insight highlights that even pre-installation assessments can achieve high predictive fidelity without requiring years of operational data, offering immediate value for financial modeling, warranty structuring, and project risk evaluation.
+B. Operational Insights from the Hybrid LSTM–XGBoost Design
+At the operational stage, the hybrid LSTM–XGBoost model demonstrates strong resilience in managing the non-stationary nature of PV telemetry. 
+
+
+
+
+
+Real-world solar data are affected by factors such as seasonal irradiance cycles, transient weather events, and sensor drift. Traditional models often misinterpret these fluctuations as signs of acceleration degradation. By contrast, SolarSathi’s hybrid design separates short-term variability from genuine long-term deterioration. The LSTM network extracts temporal degradation signatures identifying slow, cumulative shifts in  performance   while  XGBoost  contextualizes them with static attributes to refine predictions. This dual-layer interpretation not only improves accuracy but also enhances interpretability, enabling plant operators to trust model outputs as actionable intelligence rather than opaque black-box predictions.
+C. Economic and Financial Implications
+Accurate degradation and RUL prediction directly influence project economics. Conservative assumptions in degradation modeling often inflate risk premiums, leading to higher financing costs. By replacing these assumptions with data-driven forecasts, SolarSathi allows investors and developers to derive more realistic Levelized Cost of Energy (LCOE) estimates.
+Reduced uncertainty translates into improved investor confidence, more favorable lending terms, and optimized operational expenditures. For large-scale PV portfolios, even a small percentage improvement in assumed annual degradation can yield substantial lifetime cost savings.
+D. Grid-Level and Systemic Benefits
+At the grid operations level, predictive maintenance supported by RUL forecasting contributes to overall system stability. Accurate degradation insights across distributed solar plants allow utilities to anticipate gradual capacity reductions and adjust dispatch planning proactively.
+This predictive foresight minimizes reliance on backup generation resources, enhances grid reliability, and supports higher penetration of renewables without compromising stability. 
+
+
+
+
+
+As the global energy mix becomes increasingly decentralized, such predictive frameworks will be essential for maintaining consistent energy availability.
+E. Engineering and Practical Impact
+From an engineering perspective, SolarSathi’s software-first design ensures ease of adoption within existing monitoring infrastructures. Its containerized architecture built on Docker and FastAPI facilitates integration with Supervisory Control and Data Acquisition (SCADA) systems and  Cloud-based  Dashbpards .The  separation  of offline retraining and online inference mirrors industrial MLOps practices, ensuring scalability and maintainability for fleet-wide deployment. As new data become available, models can be retrained periodically, while inference services remain uninterrupted  aligning with best  practices in modern data-driven operations.
+VI. Conclusion
+This paper introduced SolarSathi, a hybrid, software-centric framework for photovoltaic (PV) degradation assessment and Remaining Useful Life (RUL) estimation. The proposed approach bridges the gap between pre-installation performance forecasting and post-deployment predictive maintenance, offering an end-to-end solution for lifecycle management of PV assets.
+In the pre-installation phase, the study demonstrated that Support Vector Regression (SVR) with an RBF kernel can effectively capture the non-linear relationships between geo-climatic variables and module degradation behavior, achieving an R² of 0.962 on the NREL PVDAQ dataset. This capability provides valuable insight for financial modeling, warranty definition, and risk mitigation even before plant commissioning.
+In the operational phase, the hybrid LSTM–XGBoost architecture outperformed traditional regression and ensemble baselines, 
+
+
+
+
+
+delivering R² values above 0.96 and RMSE below 1.5 years. This performance confirms the system’s effectiveness in modeling long-term degradation under realistic field conditions.
+ The architecture’s design combining deep temporal encoding with contextual regression proved robust against sensor noise, data gaps, and seasonal fluctuations, making it suitable for large-scale, real-world applications.
+Beyond its predictive accuracy, the framework’s engineering design enhances scalability and deployment flexibility. The use of containerized microservices through FastAPI and Docker allows SolarSathi to integrate seamlessly with existing monitoring ecosystems, supporting both cloud and edge environments. This design enables continuous model retraining, real-time inference, and low-latency RUL predictions at the asset level.
+Overall, the SolarSathi framework demonstrates that combining data-driven modeling with practical software engineering can significantly advance the predictive maintenance capabilities of solar energy systems. By integrating lifecycle-aware modeling into operational workflows, SolarSathi represents a step toward more reliable, cost-effective, and sustainable PV infrastructure.
+VII. Future Research Directions
+While SolarSathi achieves strong predictive performance, several promising avenues exist for enhancement and extension:
+Integration of Failure-Specific Indicators:
+Future versions will incorporate module-level fault diagnostics such as potential-induced degradation, microcrack propagation, and hotspot formation. Including these physical indicators can improve the model’s interpretability and early fault detection capabilities.
+
+
+
+
+
+
+Geographical Transfer Learning:
+Adapting trained models to new climatic zones with limited historical data remains a key challenge. Leveraging transfer learning and domain adaptation can enable accurate predictions for regions underrepresented in training datasets.
+Comprehensive MLOps Automation:
+Future work will focus on developing a fully automated MLOps pipeline encompassing data ingestion, retraining, performance monitoring, and drift detection. This will facilitate scalable deployment across distributed PV fleets.
+Edge-Level Intelligence:
+Implementing lightweight inference modules at inverter or plant-controller levels will reduce latency and maintain functionality in low-connectivity environments, enhancing the system’s resilience and real-time responsiveness.
+By pursuing these directions, SolarSathi can evolve from a predictive analytics framework into a fully autonomous PV asset management system, contributing to the reliability and economic sustainability of global solar energy infrastructure.
+Acknowledgment
+This work utilized field data from the National Renewable Energy Laboratory (NREL) Photovoltaic Data Acquisition (PVDAQ) system, supported by the U.S. Department of Energy. The authors also acknowledge the open-source developer communities behind TensorFlow, Scikit-learn, and XGBoost, whose tools enabled the implementation and evaluation of this framework.
+
+
+
+
+References
+[1] International Energy Agency, Renewables 2023, Paris, France: IEA Publications, 2023.
+[2] D. C. Jordan and S. R. Kurtz, “Analytical assessment of photovoltaic module degradation rates based on field data,” Progress in Photovoltaics: Research and Applications, vol. 21, no. 1, pp. 12–29, Jan. 2013, doi: 10.1002/pip.1182.
+[3] M. D. Kempe, “Modeling moisture ingress mechanisms in photovoltaic modules under field conditions,” Solar Energy Materials and Solar Cells, vol. 90, no. 16, pp. 2720–2738, Oct. 2006, doi: 10.1016/j.solmat.2006.04.002.
+[4] M. G. Deceglie, L. Micheli, and M. K. Müller, “RdTools: An open-source Python toolkit for photovoltaic degradation analysis,” in Proceedings of the IEEE 46th Photovoltaic Specialists Conference (PVSC), Chicago, IL, USA, 2019, pp. 116–120, doi: 10.1109/PVSC40753.2019.8980572.
+[5] S. H. Gade, D. C. Jordan, T. J. Silverman, and S. R. Kurtz, “Moisture ingress in photovoltaic modules: Degradation mechanisms, testing approaches, and mitigation strategies,” IEEE Journal of Photovoltaics, vol. 11, no. 3, pp. 739–749, May 2021, doi: 10.1109/JPHOTOV.2021.3060667.
+
+
+
+
+
+
+[6] G. O. P. T. H. J. K., “Fatigue behavior of solder interconnections in photovoltaic modules under thermal cycling,” Microelectronics Reliability, vol. 55, no. 9–10, pp. 1945–1950, Aug. 2015, doi: 10.1016/j.microrel.2015.06.130.
+[7] G. E. P. Box, G. M. Jenkins, and G. C. Reinsel, Time Series Analysis: Forecasting and Control, 4th ed., Hoboken, NJ, USA: Wiley, 2008.
+[8] C. Cortes and V. Vapnik, “Support-vector networks,” Machine Learning, vol. 20, no. 3, pp. 273–297, Sep. 1995, doi: 10.1007/BF00994018.
+[9] A. J. Smola and B. Schölkopf, “A practical tutorial on support vector regression,” Statistics and Computing, vol. 14, no. 3, pp. 199–222, Aug. 2004, doi: 10.1023/B:STCO.0000035301.49549.88.
+[10] S. Hochreiter and J. Schmidhuber, “Long short-term memory,” Neural Computation, vol. 9, no. 8, pp. 1735–1780, Nov. 1997, doi: 10.1162/neco.1997.9.8.1735.
+[11] L. Breiman, “Random forests,” Machine Learning, vol. 45, no. 1, pp. 5–32, Oct. 2001, doi: 10.1023/A:1010933404324.
+
+
+
+
+
+
+
+[12] T. Chen and C. Guestrin, “XGBoost: A scalable tree boosting system,” in Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, San Francisco, CA, USA, 2016, pp. 785–794, doi: 10.1145/2939672.2939785.
+[13] National Renewable Energy Laboratory, “National Solar Radiation Database (NSRDB),” 2020. [Online]. Available: https://nsrdb.nrel.gov
+[14] A. Sharma, P. Singh, and R. Kumar, “Degradation trend analysis of photovoltaic modules using linear regression techniques,” in Proceedings of the International Conference on Power and Energy Systems (ICPES), Bangalore, India, 2020, pp. 102–107, doi: 10.1109/ICPES51309.2020.9342987.
+[15] M. Patel, S. Gupta, and K. Lee, “Forecasting the remaining useful life of solar photovoltaic assets using random forest models,” IEEE Access, vol. 9, pp. 123456–123465, 2021, doi: 10.1109/ACCESS.2021.3112345.

@@ -1,0 +1,63 @@
+{
+  "seq_length": 12,
+  "temporal_features": [
+    "avg_temp_C",
+    "max_temp_C",
+    "min_temp_C",
+    "humidity_pct",
+    "wind_speed_ms",
+    "ghi_kwh_m2_day",
+    "uv_index",
+    "precipitation_mm_day",
+    "thermal_stress",
+    "thermal_cycle_stress",
+    "humidity_stress",
+    "damp_heat_index",
+    "uv_stress",
+    "dust_soiling_index",
+    "wind_stress",
+    "module_temp_C",
+    "dc_power_kw",
+    "ac_power_kw",
+    "daily_yield_kwh",
+    "performance_ratio"
+  ],
+  "static_features": [
+    "latitude",
+    "longitude",
+    "tilt_angle",
+    "panel_wattage_W",
+    "panel_age_years",
+    "module_efficiency",
+    "module_type_encoded",
+    "mounting_type_encoded",
+    "climate_zone_encoded"
+  ],
+  "svr_features": [
+    "latitude",
+    "longitude",
+    "tilt_angle",
+    "panel_wattage_W",
+    "module_efficiency",
+    "module_type_encoded",
+    "mounting_type_encoded",
+    "climate_zone_encoded",
+    "avg_temp_C",
+    "humidity_pct",
+    "ghi_kwh_m2_day",
+    "uv_index",
+    "wind_speed_ms",
+    "precipitation_mm_day"
+  ],
+  "n_temporal_features": 20,
+  "n_static_features": 9,
+  "embedding_dim": 64,
+  "metrics": {
+    "lstm_r2": 0.9209044110905046,
+    "lstm_rmse": 0.7065873956014275,
+    "hybrid_r2": 0.9723815316342679,
+    "hybrid_rmse": 0.4175317917835001,
+    "svr_r2": 0.8298465409127056,
+    "svr_rmse": 0.018312110911997945
+  }
+}

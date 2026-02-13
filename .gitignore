@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Virtual environments
+venv/
+env/
+.env
+
+# Models and Data (Optional: keep if you want them on GitHub, but usually excluded)
+# ml/models/*.h5
+# ml/models/*.pkl
+# ml/models/*.json
+# ml/data/*.csv
+
+# Frontend dependencies
+node_modules/
+
+# IDE files
+.vscode/
+.idea/
+
+# Large datasets (keeping the generated one but ignoring raw source if needed)
+# ml/data/nasa_climate_data_raw.csv

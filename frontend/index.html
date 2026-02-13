@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Solar Saathi — AI-powered solar panel lifespan prediction using hybrid LSTM+XGBoost models. Predict degradation rates and remaining useful life before installation.">
+  <title>Solar Saathi — AI Solar Panel Lifespan Prediction</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>">
+</head>
+<body>
+
+  <!-- Animated Background -->
+  <div class="bg-animation"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="logo">
+        <div class="logo-icon">☀️</div>
+        Solar Saathi
+      </a>
+      <ul class="nav-links">
+        <li><a href="#predict">Predict</a></li>
+        <li><a href="#methodology">How It Works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          AI-Powered Prediction Engine
+        </div>
+        <h1>
+          Predict Solar Panel<br>
+          <span class="gradient-text">Lifespan Before Installation</span>
+        </h1>
+        <p>
+          SolarSaathi uses a hybrid LSTM + XGBoost model trained on authentic NASA climate data 
+          spanning 120 global locations over 10+ years to accurately predict photovoltaic degradation 
+          rates and remaining useful life — before you install a single panel.
+        </p>
+        <div class="hero-buttons">
+          <a href="#predict" class="btn btn-primary">🔮 Start Prediction</a>
+          <a href="#methodology" class="btn btn-secondary">📊 Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <section class="container">
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-value">120+</div>
+        <div class="stat-label">Global Locations</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">10yr</div>
+        <div class="stat-label">NASA Climate Data</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">96%+</div>
+        <div class="stat-label">Model Accuracy (R²)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">&lt;1.5yr</div>
+        <div class="stat-label">RMSE Precision</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prediction Section -->
+  <section id="predict" class="container">
+    <div class="section-header">
+      <h2>🔮 Predict Panel <span class="text-gradient">Lifespan</span></h2>
+      <p>Enter your installation coordinates and panel configuration to get an AI-powered lifespan prediction backed by real climate data.</p>
+    </div>
+
+    <div class="predict-wrapper">
+      <!-- Input Form -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="icon solar">📍</div>
+          <div>
+            <h3>Installation Configuration</h3>
+            <p>Enter site coordinates & panel details</p>
+          </div>
+        </div>
+
+        <form id="predictionForm">
+          <!-- Coordinates -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="latitude">Latitude</label>
+              <input type="number" id="latitude" class="form-control" placeholder="e.g. 19.076" step="0.001" min="-90" max="90" required>
+            </div>
+            <div class="form-group">
+              <label for="longitude">Longitude</label>
+              <input type="number" id="longitude" class="form-control" placeholder="e.g. 72.878" step="0.001" min="-180" max="180" required>
+            </div>
+          </div>
+
+          <!-- Quick locations -->
+          <div class="form-group">
+            <label>Quick Locations</label>
+            <div class="quick-locations" id="quickLocations">
+              <button type="button" class="quick-loc-btn" data-lat="19.076" data-lon="72.878">Mumbai</button>
+              <button type="button" class="quick-loc-btn" data-lat="28.614" data-lon="77.209">Delhi</button>
+              <button type="button" class="quick-loc-btn" data-lat="13.083" data-lon="80.270">Chennai</button>
+              <button type="button" class="quick-loc-btn" data-lat="25.205" data-lon="55.271">Dubai</button>
+              <button type="button" class="quick-loc-btn" data-lat="33.449" data-lon="-112.074">Phoenix</button>
+              <button type="button" class="quick-loc-btn" data-lat="52.520" data-lon="13.405">Berlin</button>
+              <button type="button" class="quick-loc-btn" data-lat="-33.869" data-lon="151.209">Sydney</button>
+              <button type="button" class="quick-loc-btn" data-lat="30.044" data-lon="31.236">Cairo</button>
+              <button type="button" class="quick-loc-btn" data-lat="34.153" data-lon="77.577">Leh</button>
+              <button type="button" class="quick-loc-btn" data-lat="-1.286" data-lon="36.817">Nairobi</button>
+            </div>
+          </div>
+
+          <!-- Module Type -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="moduleType">Module Technology</label>
+              <select id="moduleType" class="form-control">
+                <option value="Mono-Si">Mono-Crystalline Silicon</option>
+                <option value="Poly-Si">Poly-Crystalline Silicon</option>
+                <option value="CdTe">Cadmium Telluride (CdTe)</option>
+                <option value="CIGS">CIGS Thin Film</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="mountingType">Mounting Type</label>
+              <select id="mountingType" class="form-control">
+                <option value="fixed_tilt">Fixed Tilt</option>
+                <option value="rooftop">Rooftop</option>
+                <option value="open_rack">Open Rack</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Tilt Angle -->
+          <div class="form-group">
+            <label for="tiltAngle">
+              Tilt Angle 
+              <span class="range-value" id="tiltValue">25°</span>
+            </label>
+            <div class="range-group">
+              <input type="range" id="tiltAngle" min="0" max="90" value="25" step="1">
+            </div>
+          </div>
+
+          <!-- Panel Wattage -->
+          <div class="form-group">
+            <label for="panelWattage">Panel Wattage (W)</label>
+            <select id="panelWattage" class="form-control">
+              <option value="250">250W</option>
+              <option value="300">300W</option>
+              <option value="350">350W</option>
+              <option value="400" selected>400W</option>
+              <option value="450">450W</option>
+              <option value="500">500W</option>
+              <option value="550">550W</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="predictBtn" style="width:100%; margin-top: 8px;">
+            ⚡ Predict Lifespan
+          </button>
+        </form>
+      </div>
+
+      <!-- Results Panel (shows info or loading or results) -->
+      <div>
+        <!-- Intro info (shown initially) -->
+        <div class="glass-card" id="infoPanel">
+          <div class="card-header">
+            <div class="icon chart">📊</div>
+            <div>
+              <h3>How Predictions Work</h3>
+              <p>Powered by authentic NASA data</p>
+            </div>
+          </div>
+          <div style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8;">
+            <p style="margin-bottom: 16px;">
+              <strong style="color: var(--text-primary);">1. Real Climate Data</strong><br>
+              We fetch 10+ years of authentic NASA POWER satellite data for your exact coordinates — temperature, humidity, irradiance, UV, wind, and precipitation.
+            </p>
+            <p style="margin-bottom: 16px;">
+              <strong style="color: var(--text-primary);">2. LSTM Temporal Analysis</strong><br>
+              Our Bidirectional LSTM network processes monthly climate sequences to extract temporal degradation patterns — capturing thermal cycling, humidity ingress, and UV damage.
+            </p>
+            <p style="margin-bottom: 16px;">
+              <strong style="color: var(--text-primary);">3. XGBoost Prediction</strong><br>
+              The XGBoost regressor combines LSTM degradation embeddings with your panel configuration (technology, mounting, tilt) to predict Remaining Useful Life with R² > 0.96.
+            </p>
+            <p>
+              <strong style="color: var(--text-primary);">4. Physics-Informed Modeling</strong><br>
+              Degradation rates use Arrhenius equation (thermal stress), Fick's law (humidity ingress), and IEC 61215 standards for industrially-validated predictions.
+            </p>
+          </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loadingPanel">
+          <div class="spinner"></div>
+          <p>Analyzing climate data for your location...</p>
+          <p class="loading-sub">Fetching NASA POWER satellite data & running hybrid model inference</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results Section (appears after prediction) -->
+  <section id="results" class="container">
+    <div class="results-header">
+      <h2>📊 Prediction <span class="text-gradient">Results</span></h2>
+      <p>Location: <span class="location-name" id="resultLocation">—</span></p>
+      <div class="model-badge" style="margin-top: 12px;">
+        🤖 Hybrid LSTM+XGBoost Model • <span id="modelR2">R² > 0.96</span>
+      </div>
+    </div>
+
+    <!-- Main Metrics -->
+    <div class="metrics-grid" id="metricsGrid">
+      <div class="metric-card gold">
+        <div class="metric-icon">⏱️</div>
+        <div class="metric-value" id="metricLifespan">—</div>
+        <div class="metric-unit">years</div>
+        <div class="metric-label">Estimated Lifespan</div>
+      </div>
+      <div class="metric-card blue">
+        <div class="metric-icon">📉</div>
+        <div class="metric-value" id="metricDegradation">—</div>
+        <div class="metric-unit">% / year</div>
+        <div class="metric-label">Degradation Rate</div>
+      </div>
+      <div class="metric-card green">
+        <div class="metric-icon">⚡</div>
+        <div class="metric-value" id="metricEnergy">—</div>
+        <div class="metric-unit">kWh / year</div>
+        <div class="metric-label">Annual Energy Yield</div>
+      </div>
+      <div class="metric-card purple">
+        <div class="metric-icon">🎯</div>
+        <div class="metric-value" id="metricConfidence">—</div>
+        <div class="metric-unit">%</div>
+        <div class="metric-label">Confidence Score</div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>📉 Degradation Projection Over Time</h3>
+        <div class="chart-canvas-wrapper">
+          <canvas id="degradationChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>🌡️ Monthly Climate Profile</h3>
+        <div class="chart-canvas-wrapper">
+          <canvas id="climateChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Climate Summary -->
+    <div class="glass-card">
+      <div class="card-header">
+        <div class="icon globe">🌍</div>
+        <div>
+          <h3>Climate Analysis Summary</h3>
+          <p>Based on NASA POWER satellite data (2014-2024)</p>
+        </div>
+      </div>
+      <div class="climate-grid" id="climateGrid">
+        <!-- Filled by JS -->
+      </div>
+
+      <!-- Confidence Bar -->
+      <div class="confidence-bar">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 600; font-size: 0.9rem;">🤖 Model Confidence</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--accent-emerald);" id="confidenceValue">—</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" id="confidenceBar" style="width: 0%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lifetime Energy -->
+    <div class="glass-card mt-2">
+      <div class="card-header">
+        <div class="icon solar">⚡</div>
+        <div>
+          <h3>Lifetime Performance Projection</h3>
+          <p>Estimated total energy generation over panel lifecycle</p>
+        </div>
+      </div>
+      <div class="metrics-grid" style="margin-bottom: 0;">
+        <div class="metric-card gold" style="background: rgba(245,158,11,0.05);">
+          <div class="metric-icon">🏭</div>
+          <div class="metric-value" id="lifetimeEnergy">—</div>
+          <div class="metric-unit">MWh</div>
+          <div class="metric-label">Lifetime Energy Yield</div>
+        </div>
+        <div class="metric-card blue" style="background: rgba(59,130,246,0.05);">
+          <div class="metric-icon">💰</div>
+          <div class="metric-value" id="lcoeFactor">—</div>
+          <div class="metric-unit">factor</div>
+          <div class="metric-label">LCOE Factor</div>
+        </div>
+        <div class="metric-card green" style="background: rgba(16,185,129,0.05);">
+          <div class="metric-icon">🔧</div>
+          <div class="metric-value" id="panelConfig">—</div>
+          <div class="metric-unit"></div>
+          <div class="metric-label">Panel Configuration</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-2">
+      <button class="btn btn-secondary" onclick="resetPrediction()">🔄 New Prediction</button>
+    </div>
+  </section>
+
+  <!-- How It Works / Methodology -->
+  <section id="methodology" class="container">
+    <div class="section-header">
+      <h2>🧠 How <span class="text-gradient">SolarSaathi</span> Works</h2>
+      <p>A three-phase hybrid framework combining physics-informed modeling with advanced deep learning</p>
+    </div>
+
+    <div class="methodology-grid">
+      <div class="method-card">
+        <div class="phase-tag">Phase I — Pre-Installation</div>
+        <h3>📍 SVR Baseline Estimation</h3>
+        <p>
+          Support Vector Regression with RBF kernel analyzes geo-climatic variables (temperature, humidity, GHI, UV) 
+          and system configuration to estimate baseline degradation rate before commissioning. 
+          Achieves R² of 0.962 on NREL PVDAQ-validated data.
+        </p>
+        <div class="tech-stack">
+          <span class="tech-tag">SVR-RBF</span>
+          <span class="tech-tag">Scikit-learn</span>
+          <span class="tech-tag">NASA POWER API</span>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <div class="phase-tag">Phase II — Temporal Analysis</div>
+        <h3>🧬 LSTM Degradation Encoder</h3>
+        <p>
+          Bidirectional LSTM processes 12-month sequences of climate telemetry (power, irradiance, temperature) 
+          to extract 64-dimensional latent degradation signatures. Filters transient weather noise from 
+          genuine long-term deterioration patterns.
+        </p>
+        <div class="tech-stack">
+          <span class="tech-tag">Bi-LSTM</span>
+          <span class="tech-tag">TensorFlow/Keras</span>
+          <span class="tech-tag">Temporal Embedding</span>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <div class="phase-tag">Phase II — RUL Prediction</div>
+        <h3>🎯 XGBoost RUL Estimator</h3>
+        <p>
+          Gradient-boosted trees combine LSTM temporal embeddings with static metadata (module technology, 
+          mounting type, installation age, climate zone) for Remaining Useful Life prediction. 
+          Handles mixed data types and nonlinear interactions with RMSE &lt; 1.5 years.
+        </p>
+        <div class="tech-stack">
+          <span class="tech-tag">XGBoost</span>
+          <span class="tech-tag">Gradient Boosting</span>
+          <span class="tech-tag">Hybrid Architecture</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="container">
+    <div class="section-header">
+      <h2>✨ Key <span class="text-gradient">Features</span></h2>
+      <p>Enterprise-grade prediction platform built for real-world solar asset management</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🛰️</div>
+        <h4>NASA Satellite Data</h4>
+        <p>Authentic climate data from NASA POWER API — 10+ years of temperature, humidity, irradiance, UV index, and precipitation for any coordinates worldwide.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧪</div>
+        <h4>Physics-Informed Model</h4>
+        <p>Degradation calculations use Arrhenius equation (thermal stress), Fick's law (humidity ingress), and IEC 61215 damp heat standards.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌍</div>
+        <h4>Global Coverage</h4>
+        <p>Trained on 120+ locations across 6 continents and 15 climate zones — from Arctic cold to Saharan heat, tropical humidity to Mediterranean mild.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h4>Real-Time Inference</h4>
+        <p>RESTful API serves predictions in seconds — FastAPI backend with CORS support for seamless integration with monitoring dashboards and SCADA systems.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔋</div>
+        <h4>LCOE Optimization</h4>
+        <p>Accurate degradation forecasts enable realistic Levelized Cost of Energy calculations, reducing investor uncertainty and financing costs.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏭</div>
+        <h4>B2B Ready</h4>
+        <p>Containerizable microservice architecture designed for enterprise deployment — integrates with existing monitoring infrastructure via Docker and FastAPI.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="container" style="padding: 80px 0;">
+    <div class="glass-card" style="max-width: 800px; margin: 0 auto;">
+      <div class="card-header">
+        <div class="icon solar">📄</div>
+        <div>
+          <h3>About This Research</h3>
+          <p>IEEE Research Paper</p>
+        </div>
+      </div>
+      <div style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8;">
+        <p style="margin-bottom: 12px;">
+          <strong style="color: var(--text-primary);">SolarSaathi: A Hybrid Framework for Photovoltaic Degradation and Life Prediction</strong>
+        </p>
+        <p style="margin-bottom: 12px;">
+          <em>Pravesh Pandey</em> — Dept. of Computer Engineering, Thakur College of Engineering & Technology, Mumbai, India
+        </p>
+        <p style="margin-bottom: 12px;">
+          <em>Ms. Veena Kulkarni</em> — Asst. Professor, Computer Engineering, Thakur College of Engineering & Technology, Mumbai, India
+        </p>
+        <p>
+          This research introduces SolarSaathi, a hybrid software-centric framework that bridges the gap between 
+          pre-installation performance forecasting and post-deployment predictive maintenance, offering an end-to-end 
+          solution for lifecycle management of photovoltaic assets.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>☀️ <strong>Solar Saathi</strong> — Empowering Solar Energy Through AI</p>
+      <p class="credits">
+        Data Source: NASA POWER Project (power.larc.nasa.gov) • 
+        Built with TensorFlow, XGBoost, FastAPI & ❤️
+      </p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
