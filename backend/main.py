@@ -14,11 +14,24 @@ import uvicorn
 
 from predictor import SolarSaathiPredictor
 
+from contextlib import asynccontextmanager
+
 # --- App initialization ---
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Load ML models on server startup
+    success = predictor.load_models()
+    if not success:
+        print("⚠ Models not loaded. Prediction endpoints will use fallback mode.")
+    yield
+    # Clean up on shutdown if needed
+
 app = FastAPI(
     title="Solar Saathi API",
     description="Hybrid LSTM+XGBoost model for solar panel lifespan prediction",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 # CORS
@@ -30,21 +43,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount frontend
-frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
-if os.path.exists(frontend_dir):
-    app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
-
-# --- Model loading ---
-predictor = SolarSaathiPredictor()
-
-
-@app.on_event("startup")
-async def startup():
-    """Load ML models on server startup."""
-    success = predictor.load_models()
-    if not success:
-        print("⚠ Models not loaded. Prediction endpoints will use fallback mode.")
+# Static files will be mounted at the end to avoid route conflicts
 
 
 # --- Request/Response models ---
@@ -64,13 +63,8 @@ class HealthResponse(BaseModel):
 
 
 # --- Endpoints ---
-@app.get("/")
-async def root():
-    """Serve the frontend."""
-    index_path = os.path.join(frontend_dir, "index.html")
-    if os.path.exists(index_path):
-        return FileResponse(index_path)
-    return {"message": "Solar Saathi API is running. Use /docs for API documentation."}
+# Predictor instance
+predictor = SolarSaathiPredictor()
 
 
 @app.get("/health", response_model=HealthResponse)
@@ -132,5 +126,11 @@ async def get_sample_locations():
     }
 
 
+# Mount frontend at the end after all routes
+frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
+if os.path.exists(frontend_dir):
+    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
+
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
+    uvicorn.run(app, host="127.0.0.1", port=8000, reload=False)
